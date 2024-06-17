@@ -262,6 +262,9 @@ class DrawingMenu extends React.Component<Props> {
       this.cancelShapeDrawing()
       this.drawShape()
     }
+    if (this.props.updatedBuffer && this.props.updatedBufferUnit) {
+      this.updateBuffer(this.props.updatedBuffer, this.props.updatedBufferUnit)
+    }
   }
 
   renderShapeButton(shape: Shape, icon: any) {
@@ -298,9 +301,6 @@ class DrawingMenu extends React.Component<Props> {
     const acceptEditAlt = saveAndContinue
       ? 'Save And Continue Drawing'
       : 'Accept Edit'
-          if (this.props.updatedBuffer && this.props.updatedBufferUnit) {
-            this.updateBuffer(this.props.updatedBuffer, this.props.updatedBufferUnit)
-          }
     return (
       <Background {...rest}>
         <TitleContainer>
