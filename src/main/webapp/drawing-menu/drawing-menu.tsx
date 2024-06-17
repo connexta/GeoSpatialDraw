@@ -205,7 +205,7 @@ class DrawingMenu extends React.Component<Props> {
 
   updateBuffer(buffer: number, bufferUnit: string) {
     const control = this.controlsMap.get(this.props.shape)
-      if (control !== undefined) {
+    if (control !== undefined) {
       control.updateBuffer(buffer, bufferUnit)
     }
   }

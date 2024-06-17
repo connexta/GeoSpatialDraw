@@ -77,7 +77,7 @@ class DrawingContext {
     const featureList = this.drawLayer.getSource().getFeatures()
     if (featureList.length) {
       const feature = featureList[0]
-        this.updateBufferFeature(feature)
+      this.updateBufferFeature(feature)
     }
   }
 
@@ -99,8 +99,12 @@ class DrawingContext {
 
   updateBufferFeature(feature: ol.Feature, animate: boolean = true): void {
     this.bufferLayer.getSource().clear()
-    const buffer: number | undefined = this.updatedBuffer ? this.updatedBuffer : feature.get('buffer')
-    const bufferUnit: string | undefined = this.updatedBufferUnit ? this.updatedBufferUnit : feature.get('bufferUnit')
+    const buffer: number | undefined = this.updatedBuffer
+      ? this.updatedBuffer
+      : feature.get('buffer')
+    const bufferUnit: string | undefined = this.updatedBufferUnit
+      ? this.updatedBufferUnit
+      : feature.get('bufferUnit')
     if (buffer !== undefined) {
       feature.set('buffer', buffer)
       feature.set('bufferUnit', bufferUnit)

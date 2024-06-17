@@ -56,7 +56,6 @@ interface DrawingControl {
    * @param bufferUnit - new bufferUnit value
    */
   updateBuffer(buffer: number, bufferUnit: string): void
-
 }
 
 export default DrawingControl
