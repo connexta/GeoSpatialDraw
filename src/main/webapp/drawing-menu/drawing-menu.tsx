@@ -155,12 +155,7 @@ class DrawingMenu extends React.Component<Props> {
     this.drawingContext = new DrawingContext({
       map: this.props.map,
       drawingStyle: props.mapStyle,
-      updatedBuffer: this.props.updatedBuffer,
-      updatedBufferUnit: this.props.updatedBufferUnit,
     })
-    console.log(":creating context")
-    console.log(this.props.updatedBuffer)
-    console.log(this.props.updatedBufferUnit)
     this.controlsMap = new Map<Shape, DrawingControl>()
     this.controlsMap.set(
       'Polygon',

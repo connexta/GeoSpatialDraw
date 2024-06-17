@@ -39,17 +39,11 @@ class DrawingContext {
   constructor({
     map,
     drawingStyle,
-    updatedBuffer,
-    updatedBufferUnit,
   }: {
     map: ol.Map
     drawingStyle: ol.style.Style | ol.StyleFunction | ol.style.Style[]
-    updatedBuffer?: number
-    updatedBufferUnit?: string
   }) {
     this.bufferUpdateEvent = this.bufferUpdateEvent.bind(this)
-    this.updatedBuffer = updatedBuffer
-    this.updatedBufferUnit = updatedBufferUnit
     this.animationFrameId = 0
     this.geoFormat = new ol.format.GeoJSON()
     this.style = drawingStyle
@@ -107,12 +101,9 @@ class DrawingContext {
     this.bufferLayer.getSource().clear()
     const buffer: number | undefined = this.updatedBuffer ? this.updatedBuffer : feature.get('buffer')
     const bufferUnit: string | undefined = this.updatedBufferUnit ? this.updatedBufferUnit : feature.get('bufferUnit')
-    console.log("buffer update feature called")
-    feature.set('buffer', buffer)
-    feature.set('bufferUnit', bufferUnit)
-    console.log(buffer)
-    console.log(bufferUnit)
-    if (buffer !== undefined && buffer !== undefined) {
+    if (buffer !== undefined) {
+      feature.set('buffer', buffer)
+      feature.set('bufferUnit', bufferUnit)
       const geo: GeometryJSON = JSON.parse(this.geoFormat.writeFeature(feature))
       adjustGeoCoordsForAntimeridian(geo)
       const bufferedGeo = makeBufferedGeo(geo)
