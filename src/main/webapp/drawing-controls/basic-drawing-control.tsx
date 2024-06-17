@@ -108,6 +108,12 @@ abstract class BasicDrawingControl implements DrawingControl {
   isDrawing(): boolean {
     return this.drawingActive
   }
+
+  updateBuffer(buffer: number, bufferUnit: string): void {
+    // no buffer applied to basic drawings
+    console.debug(buffer)
+    console.debug(bufferUnit)
+  }
 }
 
 export default BasicDrawingControl

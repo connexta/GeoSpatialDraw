@@ -31,6 +31,8 @@ type Props = HTMLAttributes & {
   saveAndContinue?: boolean
   title?: string
   geometry: GeometryJSON | null
+  updatedBuffer?: number
+  updatedBufferUnit?: string
   toggleCoordinateEditor?: () => void
   onCancel: () => void
   onOk: () => void
@@ -153,7 +155,12 @@ class DrawingMenu extends React.Component<Props> {
     this.drawingContext = new DrawingContext({
       map: this.props.map,
       drawingStyle: props.mapStyle,
+      updatedBuffer: this.props.updatedBuffer,
+      updatedBufferUnit: this.props.updatedBufferUnit,
     })
+    console.log(":creating context")
+    console.log(this.props.updatedBuffer)
+    console.log(this.props.updatedBufferUnit)
     this.controlsMap = new Map<Shape, DrawingControl>()
     this.controlsMap.set(
       'Polygon',
@@ -198,6 +205,13 @@ class DrawingMenu extends React.Component<Props> {
           control.setGeo(this.props.geometry)
         }
       }
+    }
+  }
+
+  updateBuffer(buffer: number, bufferUnit: string) {
+    const control = this.controlsMap.get(this.props.shape)
+      if (control !== undefined) {
+      control.updateBuffer(buffer, bufferUnit)
     }
   }
 
@@ -289,6 +303,9 @@ class DrawingMenu extends React.Component<Props> {
     const acceptEditAlt = saveAndContinue
       ? 'Save And Continue Drawing'
       : 'Accept Edit'
+          if (this.props.updatedBuffer && this.props.updatedBufferUnit) {
+            this.updateBuffer(this.props.updatedBuffer, this.props.updatedBufferUnit)
+          }
     return (
       <Background {...rest}>
         <TitleContainer>

@@ -28,6 +28,8 @@ class DrawingContext {
   private style: ol.style.Style | ol.StyleFunction | ol.style.Style[]
   private geoFormat: ol.format.GeoJSON
   private animationFrameId: number
+  private updatedBuffer: number | undefined
+  private updatedBufferUnit: string | undefined
 
   /**
    * Constructs an instance of the drawing context
@@ -37,11 +39,17 @@ class DrawingContext {
   constructor({
     map,
     drawingStyle,
+    updatedBuffer,
+    updatedBufferUnit,
   }: {
     map: ol.Map
     drawingStyle: ol.style.Style | ol.StyleFunction | ol.style.Style[]
+    updatedBuffer?: number
+    updatedBufferUnit?: string
   }) {
     this.bufferUpdateEvent = this.bufferUpdateEvent.bind(this)
+    this.updatedBuffer = updatedBuffer
+    this.updatedBufferUnit = updatedBufferUnit
     this.animationFrameId = 0
     this.geoFormat = new ol.format.GeoJSON()
     this.style = drawingStyle
@@ -69,6 +77,16 @@ class DrawingContext {
     })
   }
 
+  updateBuffer(buffer: number, bufferUnit: string): void {
+    this.updatedBuffer = buffer
+    this.updatedBufferUnit = bufferUnit
+    const featureList = this.drawLayer.getSource().getFeatures()
+    if (featureList.length) {
+      const feature = featureList[0]
+        this.updateBufferFeature(feature)
+    }
+  }
+
   getStyle(): ol.style.Style | ol.StyleFunction | ol.style.Style[] {
     return this.style
   }
@@ -87,8 +105,14 @@ class DrawingContext {
 
   updateBufferFeature(feature: ol.Feature, animate: boolean = true): void {
     this.bufferLayer.getSource().clear()
-    const buffer: number | undefined = feature.get('buffer')
-    if (buffer !== undefined && buffer > 0) {
+    const buffer: number | undefined = this.updatedBuffer ? this.updatedBuffer : feature.get('buffer')
+    const bufferUnit: string | undefined = this.updatedBufferUnit ? this.updatedBufferUnit : feature.get('bufferUnit')
+    console.log("buffer update feature called")
+    feature.set('buffer', buffer)
+    feature.set('bufferUnit', bufferUnit)
+    console.log(buffer)
+    console.log(bufferUnit)
+    if (buffer !== undefined && buffer !== undefined) {
       const geo: GeometryJSON = JSON.parse(this.geoFormat.writeFeature(feature))
       adjustGeoCoordsForAntimeridian(geo)
       const bufferedGeo = makeBufferedGeo(geo)
