@@ -49,6 +49,13 @@ interface DrawingControl {
    * @returns true if the drawing interaction has been started
    */
   isDrawing(): boolean
+
+  /**
+   * Updated the buffer on the drawn location
+   * @param buffer - new buffer value
+   * @param bufferUnit - new bufferUnit value
+   */
+  updateBuffer(buffer: number, bufferUnit: string): void
 }
 
 export default DrawingControl

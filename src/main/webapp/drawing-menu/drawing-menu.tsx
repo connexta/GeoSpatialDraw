@@ -31,6 +31,8 @@ type Props = HTMLAttributes & {
   saveAndContinue?: boolean
   title?: string
   geometry: GeometryJSON | null
+  updatedBuffer?: number
+  updatedBufferUnit?: string
   toggleCoordinateEditor?: () => void
   onCancel: () => void
   onOk: () => void
@@ -201,6 +203,13 @@ class DrawingMenu extends React.Component<Props> {
     }
   }
 
+  updateBuffer(buffer: number, bufferUnit: string) {
+    const control = this.controlsMap.get(this.props.shape)
+    if (control !== undefined) {
+      control.updateBuffer(buffer, bufferUnit)
+    }
+  }
+
   cancelShapeDrawing() {
     this.controlsMap.forEach((control: DrawingControl, _shape: Shape) => {
       control.cancelDrawing()
@@ -252,6 +261,9 @@ class DrawingMenu extends React.Component<Props> {
     ) {
       this.cancelShapeDrawing()
       this.drawShape()
+    }
+    if (this.props.updatedBuffer && this.props.updatedBufferUnit) {
+      this.updateBuffer(this.props.updatedBuffer, this.props.updatedBufferUnit)
     }
   }
 

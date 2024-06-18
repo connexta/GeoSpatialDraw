@@ -96,6 +96,10 @@ abstract class ModifiableDrawingControl extends BasicDrawingControl {
     this.startDrawingInteraction(drawInteraction)
   }
 
+  updateBuffer(buffer: number, bufferUnit: string): void {
+    this.context.updateBuffer(buffer, bufferUnit)
+  }
+
   private startDrawingInteraction(
     drawInteraction: ol.interaction.Interaction
   ): void {
