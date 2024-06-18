@@ -26,7 +26,12 @@ describe('DrawingContext', () => {
   describe('updateFeature', () => {
     it('default', () => {
       const geometry = new ol.geom.Polygon([
-        [[50, 50], [10, 10], [20, 20], [50, 50]],
+        [
+          [50, 50],
+          [10, 10],
+          [20, 20],
+          [50, 50],
+        ],
       ])
       const feature = new ol.Feature(geometry)
       const source = map.getTestData().layers[DRAW_LAYER_INDEX].getSource()
@@ -40,7 +45,12 @@ describe('DrawingContext', () => {
   describe('updateBufferFeature', () => {
     it('no buffer', () => {
       const geometry = new ol.geom.Polygon([
-        [[50, 50], [10, 10], [20, 20], [50, 50]],
+        [
+          [50, 50],
+          [10, 10],
+          [20, 20],
+          [50, 50],
+        ],
       ])
       const feature = new ol.Feature(geometry)
       const source = map.getTestData().layers[BUFFER_LAYER_INDEX].getSource()
@@ -56,7 +66,12 @@ describe('DrawingContext', () => {
     })
     it('has buffer', () => {
       const geometry = new ol.geom.Polygon([
-        [[50, 50], [10, 10], [20, 20], [50, 50]],
+        [
+          [50, 50],
+          [10, 10],
+          [20, 20],
+          [50, 50],
+        ],
       ])
       const feature = new ol.Feature({
         geometry,
@@ -125,7 +140,12 @@ describe('DrawingContext', () => {
   describe('removeInteractions', () => {
     it('default', () => {
       const geometry = new ol.geom.Polygon([
-        [[50, 50], [10, 10], [20, 20], [50, 50]],
+        [
+          [50, 50],
+          [10, 10],
+          [20, 20],
+          [50, 50],
+        ],
       ])
       const feature = new ol.Feature(geometry)
       const source = map.getTestData().layers[0].getSource()

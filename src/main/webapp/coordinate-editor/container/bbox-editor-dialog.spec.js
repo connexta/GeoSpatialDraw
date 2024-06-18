@@ -13,7 +13,15 @@ describe('bboxEditorDialog', () => {
   let startGeo
   beforeEach(() => {
     startGeo = makeEmptyGeometry('', 'Polygon')
-    startGeo.geometry.coordinates = [[[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]]
+    startGeo.geometry.coordinates = [
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+    ]
     startGeo.bbox = [0, 0, 0, 0]
   })
   describe('<BBoxEditorDialog />', () => {
@@ -33,7 +41,13 @@ describe('bboxEditorDialog', () => {
       const updated = updateGeoWithExtentBBox(startGeo, [-5, -10, 5, 10])
       expect(updated.bbox).to.deep.equal([-5, -10, 5, 10])
       expect(updated.geometry.coordinates).to.deep.equal([
-        [[-5, -10], [-5, 10], [5, 10], [5, -10], [-5, -10]],
+        [
+          [-5, -10],
+          [-5, 10],
+          [5, 10],
+          [5, -10],
+          [-5, -10],
+        ],
       ])
     })
   })
@@ -43,7 +57,13 @@ describe('bboxEditorDialog', () => {
       const updated = finalizeGeo(geo)
       expect(updated.bbox).to.deep.equal([-5, -10, 5, 10])
       expect(updated.geometry.coordinates).to.deep.equal([
-        [[-5, -10], [-5, 10], [5, 10], [5, -10], [-5, -10]],
+        [
+          [-5, -10],
+          [-5, 10],
+          [5, 10],
+          [5, -10],
+          [-5, -10],
+        ],
       ])
     })
     it('half reversed coordinates', () => {
@@ -51,7 +71,13 @@ describe('bboxEditorDialog', () => {
       const updated = finalizeGeo(geo)
       expect(updated.bbox).to.deep.equal([-5, -10, 5, 10])
       expect(updated.geometry.coordinates).to.deep.equal([
-        [[-5, -10], [-5, 10], [5, 10], [5, -10], [-5, -10]],
+        [
+          [-5, -10],
+          [-5, 10],
+          [5, 10],
+          [5, -10],
+          [-5, -10],
+        ],
       ])
     })
   })

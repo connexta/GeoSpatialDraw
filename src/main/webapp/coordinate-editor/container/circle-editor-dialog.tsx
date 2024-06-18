@@ -6,7 +6,7 @@ import { CircleEditor } from '../presentation/point-circle-editor'
 import { updateCircleGeo } from '../circle-geo-writer'
 import { CoordinateUnit } from '../units'
 
-const finalizeGeo: FinalizeGeo = geo => geo
+const finalizeGeo: FinalizeGeo = (geo) => geo
 
 type Props = {
   /** Geometry GeoJSON */

@@ -18,11 +18,11 @@ describe('<USNGInput />', () => {
     })
   })
   describe('onChange', () => {
-    it('default', done => {
+    it('default', (done) => {
       const wrapper = shallow(
         <USNGInput
           value=""
-          onChange={value => {
+          onChange={(value) => {
             expect(value).to.equal('18SUJ22850705')
             done()
           }}

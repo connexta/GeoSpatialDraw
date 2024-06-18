@@ -8,18 +8,18 @@ const Root = Common.BBoxRoot
 const PointGroup = styled.div`
   margin: 0;
   padding: 0;
-  font-size: ${props => props.theme.minimumFontSize};
+  font-size: ${(props) => props.theme.minimumFontSize};
   display: flex;
-  margin-right: ${props => props.theme.minimumSpacing};
+  margin-right: ${(props) => props.theme.minimumSpacing};
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
 `
 const Label = styled.div`
   margin: 0;
-  margin-bottom: ${props => props.theme.minimumSpacing};
+  margin-bottom: ${(props) => props.theme.minimumSpacing};
   padding: 0;
-  font-size: ${props => props.theme.minimumFontSize};
+  font-size: ${(props) => props.theme.minimumFontSize};
   display: flex;
   font-weight: bold;
 `

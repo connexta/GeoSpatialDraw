@@ -42,7 +42,7 @@ stories.addParameters({
   },
 })
 
-const makeGeometry = shape => makeEmptyGeometry('id', shape)
+const makeGeometry = (shape) => makeEmptyGeometry('id', shape)
 
 stories.add('basic', () => {
   const shape = select('shape', shapeList, 'Polygon')

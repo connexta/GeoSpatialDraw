@@ -51,7 +51,7 @@ abstract class BasicDrawingControl implements DrawingControl {
     if (this.properties.id) {
       feature.setId(this.properties.id)
     }
-    Object.keys(this.properties).forEach(key => {
+    Object.keys(this.properties).forEach((key) => {
       if (key !== 'id') {
         feature.set(key, this.properties[key])
       }

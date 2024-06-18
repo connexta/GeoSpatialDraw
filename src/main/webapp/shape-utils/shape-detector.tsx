@@ -75,15 +75,18 @@ class ShapeDetector {
     if (!this.isPolygonFeature(feature)) {
       return false
     } else {
-      const coordinates = (feature.getGeometry() as ol.geom.Polygon).getCoordinates()[0]
+      const coordinates = (
+        feature.getGeometry() as ol.geom.Polygon
+      ).getCoordinates()[0]
       const extent = feature.getGeometry().getExtent()
-      const expectedCoordinates = (turf.bboxPolygon(extent)
-        .geometry as turf.Polygon).coordinates[0] as [number, number][]
+      const expectedCoordinates = (
+        turf.bboxPolygon(extent).geometry as turf.Polygon
+      ).coordinates[0] as [number, number][]
       return (
         coordinates.length === 5 &&
-        expectedCoordinates.every(expectedPoint =>
+        expectedCoordinates.every((expectedPoint) =>
           coordinates.some(
-            point =>
+            (point) =>
               point[0] === expectedPoint[0] && point[1] === expectedPoint[1]
           )
         )

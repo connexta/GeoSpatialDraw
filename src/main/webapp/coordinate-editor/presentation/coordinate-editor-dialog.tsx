@@ -25,7 +25,7 @@ type Props = HTMLAttributes & {
 
 const Root = styled.div`
   margin: 0;
-  padding: ${props => props.theme.mediumSpacing};
+  padding: ${(props) => props.theme.mediumSpacing};
   display: flex;
   flex-direction: column;
   background-color: ${White};
@@ -48,8 +48,8 @@ const ControlsRow = styled.div`
 
 const Body = styled.div`
   margin: 0;
-  margin-bottom: ${props => props.theme.minimumSpacing};
-  margin-top: ${props => props.theme.mediumSpacing};
+  margin-bottom: ${(props) => props.theme.minimumSpacing};
+  margin-top: ${(props) => props.theme.mediumSpacing};
   padding: 0;
   display: flex;
 `
@@ -65,9 +65,9 @@ const Tab = styled.div<{ isSelected: boolean }>`
   background-color: ${White};
   border: 1px solid ${Grey};
   border-bottom: 1px solid
-    ${props => (props.isSelected ? White(props) : Grey(props))};
+    ${(props) => (props.isSelected ? White(props) : Grey(props))};
   :hover {
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.isSelected ? White(props) : Silver(props)};
   }
 `
@@ -80,16 +80,16 @@ const Button = styled.div<{ isSubmit: boolean; onClick: () => void }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${props => props.theme.minimumFontSize};
-  line-height: ${props => props.theme.minimumButtonSize};
-  height: ${props => props.theme.minimumButtonSize};
+  font-size: ${(props) => props.theme.minimumFontSize};
+  line-height: ${(props) => props.theme.minimumButtonSize};
+  height: ${(props) => props.theme.minimumButtonSize};
   padding: 0;
   margin: 0;
-  opacity: ${props => props.theme.minimumOpacity};
+  opacity: ${(props) => props.theme.minimumOpacity};
   cursor: pointer;
   color: ${White};
   width: 8em;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isSubmit ? SubmitButtonColor(props) : ButtonColor(props)};
   :hover {
     opacity: 1;

@@ -110,14 +110,14 @@ describe('<NumberInput />', () => {
     })
   })
   describe('onChange', () => {
-    it('changed to number > max', done => {
+    it('changed to number > max', (done) => {
       const wrapper = shallow(
         <NumberInput
           value={0}
           maxValue={50}
           minValue={-50}
           decimalPlaces={3}
-          onChange={value => {
+          onChange={(value) => {
             expect(value).to.equal(50)
             done()
           }}
@@ -130,14 +130,14 @@ describe('<NumberInput />', () => {
       })
       wrapper.find('input').prop('onBlur')()
     })
-    it('changed to number in bounds', done => {
+    it('changed to number in bounds', (done) => {
       const wrapper = shallow(
         <NumberInput
           value={0}
           maxValue={50}
           minValue={-50}
           decimalPlaces={3}
-          onChange={value => {
+          onChange={(value) => {
             expect(value).to.equal(3.025)
             done()
           }}
@@ -150,14 +150,14 @@ describe('<NumberInput />', () => {
       })
       wrapper.find('input').prop('onBlur')()
     })
-    it('changed to number < min', done => {
+    it('changed to number < min', (done) => {
       const wrapper = shallow(
         <NumberInput
           value={0}
           maxValue={50}
           minValue={-50}
           decimalPlaces={3}
-          onChange={value => {
+          onChange={(value) => {
             expect(value).to.equal(-50)
             done()
           }}

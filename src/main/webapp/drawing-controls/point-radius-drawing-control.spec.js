@@ -37,7 +37,7 @@ describe('PointRadiusDrawingControl', () => {
   })
   let context = null
   let recievedGeo = null
-  const receiver = geoJSON => {
+  const receiver = (geoJSON) => {
     recievedGeo = geoJSON
     recievedGeo.properties.buffer = Math.round(recievedGeo.properties.buffer)
   }

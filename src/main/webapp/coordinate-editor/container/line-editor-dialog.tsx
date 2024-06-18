@@ -8,7 +8,7 @@ import {
 } from './flat-coordinate-list-geo-editor'
 import { CoordinateUnit } from '../units'
 
-const finalizeGeo: FinalizeGeo = geo => geo
+const finalizeGeo: FinalizeGeo = (geo) => geo
 
 type Props = {
   /** Geometry GeoJSON */
@@ -19,10 +19,10 @@ type Props = {
   onUpdateGeo: (geo: GeometryJSON) => void
 }
 
-const LineGeoEditor: React.SFC<Props> = props => (
+const LineGeoEditor: React.SFC<Props> = (props) => (
   <FlatCoordinateListGeoEditor
     {...props}
-    getCoordinatesFromGeo={geo => {
+    getCoordinatesFromGeo={(geo) => {
       const coordinates = (geo.geometry as turf.LineString)
         .coordinates as Coordinates
       return coordinates.length < 1 ? [[0, 0]] : coordinates

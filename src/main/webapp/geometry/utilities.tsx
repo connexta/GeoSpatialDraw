@@ -169,7 +169,7 @@ const geoToExtent = (geo: GeometryJSON): Extent => {
 
 const convertCoordsToDisplay = (coordinates: Position[]) => {
   const coords = _.cloneDeep(coordinates)
-  coords.forEach(coord => {
+  coords.forEach((coord) => {
     if (coord[0] < 0) {
       coord[0] += 360
     }

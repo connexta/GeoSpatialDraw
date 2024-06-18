@@ -1,6 +1,6 @@
 {
   "name": "geospatialdraw",
-  "version": "0.4.6",
+  "version": "0.4.8",
   "description": "Geospatial Map Drawing Library",
   "types": "./target/webapp/index.d.ts",
   "main": "./target/webapp/index.js",
@@ -67,7 +67,7 @@
     "usng.js": "0.4.2"
   },
   "devDependencies": {
-    "@connexta/ace": "git://github.com/connexta/ace.git#235d5b3885e1525e2f42bfbd64cd9715d85f498c",
+    "@connexta/ace": "git+https://github.com/connexta/ace.git#4cc376863e82757699cdaa1301f30266e66a1efe",
     "@emotion/core": "10.0.16",
     "@emotion/styled": "10.0.15",
     "@types/lodash": "4.14.137",
@@ -88,7 +88,7 @@
     "rimraf": "3.0.0",
     "styled-components": "4.3.2",
     "typedoc": "0.15.0",
-    "typescript-bundle": "1.0.16"
+    "typescript": "5.4.5"
   },
   "peerDependencies": {
     "styled-components": ">= 4"

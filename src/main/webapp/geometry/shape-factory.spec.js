@@ -29,12 +29,21 @@ describe('shape-factory', () => {
     it('default', () => {
       const geo = makePolygonGeo(
         'id',
-        [[10, 50], [20, 60], [30, 80]],
+        [
+          [10, 50],
+          [20, 60],
+          [30, 80],
+        ],
         5,
         'kilometers'
       )
       expect(geo.geometry.coordinates).to.deep.equal([
-        [[10, 50], [20, 60], [30, 80], [10, 50]],
+        [
+          [10, 50],
+          [20, 60],
+          [30, 80],
+          [10, 50],
+        ],
       ])
       expect(geo.geometry.type).to.equal('Polygon')
       expect(geo.properties.buffer).to.equal(5)
@@ -45,12 +54,20 @@ describe('shape-factory', () => {
     it('default', () => {
       const geo = makeLineGeo(
         'id',
-        [[10, 50], [20, 60], [30, 80]],
+        [
+          [10, 50],
+          [20, 60],
+          [30, 80],
+        ],
         50,
         'meters'
       )
       expect(geo.geometry.coordinates).to.deep.equal(
-        [[10, 50], [20, 60], [30, 80]],
+        [
+          [10, 50],
+          [20, 60],
+          [30, 80],
+        ],
         5,
         'kilometers'
       )

@@ -53,17 +53,17 @@ const TitleContainer = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
   height: 100%;
-  font-size: ${props => props.theme.largeFontSize};
+  font-size: ${(props) => props.theme.largeFontSize};
 `
 const TitleLabel = styled.div`
-  color: ${props => readableColor(props.theme.positiveColor)};
+  color: ${(props) => readableColor(props.theme.positiveColor)};
   align-self: center;
-  padding-left: ${props => props.theme.largeSpacing};
-  padding-right: ${props => props.theme.minimumSpacing};
+  padding-left: ${(props) => props.theme.largeSpacing};
+  padding-right: ${(props) => props.theme.minimumSpacing};
   flex: 0 0 auto;
 `
 const Title = styled.div`
-  color: ${props => readableColor(props.theme.positiveColor)};
+  color: ${(props) => readableColor(props.theme.positiveColor)};
   font-weight: bold;
   align-self: center;
   white-space: nowrap;
@@ -74,14 +74,14 @@ const Title = styled.div`
 const ShapeMenu = styled.div`
   height: 100%;
   display: flex;
-  border-right: 1px solid ${props => props.theme.backgroundSlideout};
-  border-left: 1px solid ${props => props.theme.backgroundSlideout};
-  font-size: ${props => props.theme.minimumFontSize};
+  border-right: 1px solid ${(props) => props.theme.backgroundSlideout};
+  border-left: 1px solid ${(props) => props.theme.backgroundSlideout};
+  font-size: ${(props) => props.theme.minimumFontSize};
 `
 const ToolMenu = styled.div`
   height: 100%;
   display: flex;
-  font-size: ${props => props.theme.minimumFontSize};
+  font-size: ${(props) => props.theme.minimumFontSize};
 `
 const ControlsGroup = styled.div`
   height: 100%;
@@ -98,18 +98,18 @@ const Button = styled.div<{
   buttonType: 'primaryColor' | 'positiveColor'
 }>`
   height: 100%;
-  font-size: ${props => props.theme.largeFontSize};
+  font-size: ${(props) => props.theme.largeFontSize};
   display: flex;
   justify-content: center;
   align-items: center;
-  line-height: ${props => props.theme.minimumButtonSize};
+  line-height: ${(props) => props.theme.minimumButtonSize};
   padding: 0;
   margin: 0;
-  opacity: ${props => props.theme.minimumOpacity};
+  opacity: ${(props) => props.theme.minimumOpacity};
   cursor: pointer;
-  color: ${props => readableColor(props.theme[props.buttonType])};
+  color: ${(props) => readableColor(props.theme[props.buttonType])};
   width: 5em;
-  background-color: ${props => props.theme[props.buttonType]};
+  background-color: ${(props) => props.theme[props.buttonType]};
   :hover {
     opacity: 1;
   }
@@ -120,17 +120,17 @@ const SelectableButton = styled.div<{ isSelected: boolean }>`
   align-items: center;
   font-size: calc(${({ theme }) => theme.largeFontSize} * 1.5);
   padding: ${({ theme }) => theme.mediumSpacing};
-  opacity: ${props => (props.isSelected ? 1 : props.theme.minimumOpacity)};
+  opacity: ${(props) => (props.isSelected ? 1 : props.theme.minimumOpacity)};
   cursor: pointer;
-  color: ${props => readableColor(props.theme.positiveColor)};
+  color: ${(props) => readableColor(props.theme.positiveColor)};
   border: 1px solid
-    ${props =>
+    ${(props) =>
       props.isSelected
         ? readableColor(props.theme.positiveColor)
         : 'transparent'};
   :hover {
     opacity: 1;
-    border: 1px solid ${props => readableColor(props.theme.positiveColor)};
+    border: 1px solid ${(props) => readableColor(props.theme.positiveColor)};
   }
 `
 const DrawingBackground = styled.div`
@@ -140,7 +140,8 @@ const DrawingBackground = styled.div`
   height: 100%;
   width: 100%;
   max-width: 100%;
-  background-color: ${props => transparentize(0.2, props.theme.positiveColor)};
+  background-color: ${(props) =>
+    transparentize(0.2, props.theme.positiveColor)};
 `
 
 class DrawingMenu extends React.Component<Props> {

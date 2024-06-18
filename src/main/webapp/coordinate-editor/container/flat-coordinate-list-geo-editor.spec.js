@@ -22,8 +22,13 @@ describe('<FlatCoordinateListGeoEditor />', () => {
       <FlatCoordinateListGeoEditor
         geo={startGeo}
         coordinateUnit={LAT_LON}
-        onUpdateGeo={geo => geo}
-        getCoordinatesFromGeo={() => [[10, 12], [30, 50], [45, 34], [32, 24]]}
+        onUpdateGeo={(geo) => geo}
+        getCoordinatesFromGeo={() => [
+          [10, 12],
+          [30, 50],
+          [45, 34],
+          [32, 24],
+        ]}
         updateGeoCoordinates={() => {}}
       />
     )
@@ -33,7 +38,12 @@ describe('<FlatCoordinateListGeoEditor />', () => {
     ).to.equal('meters')
     expect(
       wrapper.find('FlatCoordinateListEditor').prop('coordinateList')
-    ).to.deep.equal([[10, 12], [30, 50], [45, 34], [32, 24]])
+    ).to.deep.equal([
+      [10, 12],
+      [30, 50],
+      [45, 34],
+      [32, 24],
+    ])
     expect(
       wrapper.find('FlatCoordinateListEditor').prop('coordinateUnit')
     ).to.equal(LAT_LON)
@@ -42,7 +52,12 @@ describe('<FlatCoordinateListGeoEditor />', () => {
     expect(wrapper.exists()).to.equal(true)
   })
   describe('set properties', () => {
-    const startCoordinates = [[10, 12], [30, 50], [45, 34], [32, 24]]
+    const startCoordinates = [
+      [10, 12],
+      [30, 50],
+      [45, 34],
+      [32, 24],
+    ]
     const getWrapper = (expected, onUpdateGeo) => {
       const startGeo = makeEmptyGeometry('', 'Line')
       startGeo.geometry.coordinates = startCoordinates
@@ -60,37 +75,34 @@ describe('<FlatCoordinateListGeoEditor />', () => {
         />
       )
     }
-    it('setBuffer', done => {
-      const wrapper = getWrapper(startCoordinates, geo => {
+    it('setBuffer', (done) => {
+      const wrapper = getWrapper(startCoordinates, (geo) => {
         expect(geo.properties.buffer).to.equal(12.7)
         done()
       })
       wrapper.find('FlatCoordinateListEditor').prop('setBuffer')(12.7)
     })
-    it('setUnit', done => {
-      const wrapper = getWrapper(startCoordinates, geo => {
+    it('setUnit', (done) => {
+      const wrapper = getWrapper(startCoordinates, (geo) => {
         expect(geo.properties.bufferUnit).to.equal('nautical miles')
         done()
       })
       wrapper.find('FlatCoordinateListEditor').prop('setUnit')('nautical miles')
     })
     describe('edit coordinates', () => {
-      const testSetCoordinateFactory = action => (
-        done,
-        editIndex,
-        expected
-      ) => {
-        const updateGeo = geo => {
-          done()
-          return geo
+      const testSetCoordinateFactory =
+        (action) => (done, editIndex, expected) => {
+          const updateGeo = (geo) => {
+            done()
+            return geo
+          }
+          const wrapper = getWrapper(expected, updateGeo)
+          wrapper.setState({ editIndex })
+          wrapper.find('FlatCoordinateListEditor').prop(action)(15.8, 13.6)
         }
-        const wrapper = getWrapper(expected, updateGeo)
-        wrapper.setState({ editIndex })
-        wrapper.find('FlatCoordinateListEditor').prop(action)(15.8, 13.6)
-      }
       describe('setCoordinate', () => {
         const testSetCoordinate = testSetCoordinateFactory('setCoordinate')
-        it('first coordinate', done => {
+        it('first coordinate', (done) => {
           testSetCoordinate(done, 0, [
             [13.6, 15.8],
             [30, 50],
@@ -98,7 +110,7 @@ describe('<FlatCoordinateListGeoEditor />', () => {
             [32, 24],
           ])
         })
-        it('middle coordinate', done => {
+        it('middle coordinate', (done) => {
           testSetCoordinate(done, 1, [
             [10, 12],
             [13.6, 15.8],
@@ -106,7 +118,7 @@ describe('<FlatCoordinateListGeoEditor />', () => {
             [32, 24],
           ])
         })
-        it('last coordinate', done => {
+        it('last coordinate', (done) => {
           testSetCoordinate(done, 3, [
             [10, 12],
             [30, 50],
@@ -117,7 +129,7 @@ describe('<FlatCoordinateListGeoEditor />', () => {
       })
       describe('addCoordinate', () => {
         const testSetCoordinate = testSetCoordinateFactory('addCoordinate')
-        it('first coordinate', done => {
+        it('first coordinate', (done) => {
           testSetCoordinate(done, 0, [
             [10, 12],
             [0, 0],
@@ -126,7 +138,7 @@ describe('<FlatCoordinateListGeoEditor />', () => {
             [32, 24],
           ])
         })
-        it('middle coordinate', done => {
+        it('middle coordinate', (done) => {
           testSetCoordinate(done, 1, [
             [10, 12],
             [30, 50],
@@ -135,7 +147,7 @@ describe('<FlatCoordinateListGeoEditor />', () => {
             [32, 24],
           ])
         })
-        it('last coordinate', done => {
+        it('last coordinate', (done) => {
           testSetCoordinate(done, 3, [
             [10, 12],
             [30, 50],
@@ -147,14 +159,26 @@ describe('<FlatCoordinateListGeoEditor />', () => {
       })
       describe('deleteCoordinate', () => {
         const testSetCoordinate = testSetCoordinateFactory('deleteCoordinate')
-        it('first coordinate', done => {
-          testSetCoordinate(done, 0, [[30, 50], [45, 34], [32, 24]])
+        it('first coordinate', (done) => {
+          testSetCoordinate(done, 0, [
+            [30, 50],
+            [45, 34],
+            [32, 24],
+          ])
         })
-        it('middle coordinate', done => {
-          testSetCoordinate(done, 1, [[10, 12], [45, 34], [32, 24]])
+        it('middle coordinate', (done) => {
+          testSetCoordinate(done, 1, [
+            [10, 12],
+            [45, 34],
+            [32, 24],
+          ])
         })
-        it('last coordinate', done => {
-          testSetCoordinate(done, 3, [[10, 12], [30, 50], [45, 34]])
+        it('last coordinate', (done) => {
+          testSetCoordinate(done, 3, [
+            [10, 12],
+            [30, 50],
+            [45, 34],
+          ])
         })
       })
     })

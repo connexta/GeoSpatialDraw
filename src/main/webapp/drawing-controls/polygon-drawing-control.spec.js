@@ -6,7 +6,14 @@ import PolygonDrawingControl from './polygon-drawing-control'
 describe('PolygonDrawingControl', () => {
   const makeFeature = () =>
     new ol.Feature({
-      geometry: new ol.geom.Polygon([[[50, 50], [10, 10], [20, 20], [50, 50]]]),
+      geometry: new ol.geom.Polygon([
+        [
+          [50, 50],
+          [10, 10],
+          [20, 20],
+          [50, 50],
+        ],
+      ]),
       color: '#996600',
       shape: 'Polygon',
       id: '',
@@ -24,13 +31,20 @@ describe('PolygonDrawingControl', () => {
     },
     geometry: {
       type: 'Polygon',
-      coordinates: [[[50, 50], [10, 10], [20, 20], [50, 50]]],
+      coordinates: [
+        [
+          [50, 50],
+          [10, 10],
+          [20, 20],
+          [50, 50],
+        ],
+      ],
     },
     bbox: [10, 10, 50, 50],
   })
   let context = null
   let recievedGeo = null
-  const receiver = geoJSON => {
+  const receiver = (geoJSON) => {
     recievedGeo = geoJSON
   }
   let control = null
@@ -56,7 +70,14 @@ describe('PolygonDrawingControl', () => {
     })
     it('startDrawing -> onCompleteDrawing', () => {
       const startGeo = makeGeoJSON()
-      startGeo.geometry.coordinates = [[[88, 5], [22, 15], [64, 20], [88, 5]]]
+      startGeo.geometry.coordinates = [
+        [
+          [88, 5],
+          [22, 15],
+          [64, 20],
+          [88, 5],
+        ],
+      ]
       control.startDrawing()
       control.setGeo(startGeo)
       control.onCompleteDrawing({

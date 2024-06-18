@@ -43,7 +43,7 @@ const CircleRoot = styled(Root)`
 `
 const InputGroup = styled.label`
   margin: 0;
-  margin-top: ${props => props.theme.minimumSpacing};
+  margin-top: ${(props) => props.theme.minimumSpacing};
   padding: 0;
   display: flex;
 `

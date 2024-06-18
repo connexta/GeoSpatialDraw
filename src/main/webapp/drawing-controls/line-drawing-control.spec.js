@@ -6,7 +6,11 @@ import LineDrawingControl from './line-drawing-control'
 describe('LineDrawingControl', () => {
   const makeFeature = () =>
     new ol.Feature({
-      geometry: new ol.geom.LineString([[50, 50], [10, 10], [20, 20]]),
+      geometry: new ol.geom.LineString([
+        [50, 50],
+        [10, 10],
+        [20, 20],
+      ]),
       color: '#996600',
       shape: 'Line',
       id: '',
@@ -24,13 +28,17 @@ describe('LineDrawingControl', () => {
     },
     geometry: {
       type: 'LineString',
-      coordinates: [[50, 50], [10, 10], [20, 20]],
+      coordinates: [
+        [50, 50],
+        [10, 10],
+        [20, 20],
+      ],
     },
     bbox: [10, 10, 50, 50],
   })
   let context = null
   let recievedGeo = null
-  const receiver = geoJSON => {
+  const receiver = (geoJSON) => {
     recievedGeo = geoJSON
   }
   let control = null
@@ -56,7 +64,12 @@ describe('LineDrawingControl', () => {
     })
     it('startDrawing -> onCompleteDrawing', () => {
       const startGeo = makeGeoJSON()
-      startGeo.geometry.coordinates = [[88, 5], [22, 15], [64, 20], [88, 5]]
+      startGeo.geometry.coordinates = [
+        [88, 5],
+        [22, 15],
+        [64, 20],
+        [88, 5],
+      ]
       control.startDrawing(startGeo)
       control.onCompleteDrawing({
         feature: makeFeature(),

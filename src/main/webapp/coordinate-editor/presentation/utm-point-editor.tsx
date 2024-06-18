@@ -17,7 +17,7 @@ const InputGroup = styled.label`
   margin: 0;
   padding: 0;
   display: flex;
-  margin-bottom: ${props => props.theme.minimumSpacing};
+  margin-bottom: ${(props) => props.theme.minimumSpacing};
 `
 const SelectGroup = Common.Row
 const Label = Common.Label

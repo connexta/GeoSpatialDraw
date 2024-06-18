@@ -102,13 +102,13 @@ describe('dms-formatting', () => {
   const negativeDecimalList = [-45.5, -9.947208, -38.88248, -83.37094]
   describe('dmsSign', () => {
     it('negative', () => {
-      negativeDMSList.forEach(dms => {
+      negativeDMSList.forEach((dms) => {
         const sign = formatting.dmsSign(dms)
         expect(sign).to.equal(-1)
       })
     })
     it('positive', () => {
-      positiveDMSList.forEach(dms => {
+      positiveDMSList.forEach((dms) => {
         const sign = formatting.dmsSign(dms)
         expect(sign).to.equal(1)
       })
@@ -122,24 +122,24 @@ describe('dms-formatting', () => {
   })
   describe('setSign', () => {
     it('set negative', () => {
-      positiveDMSList.forEach(dms => {
+      positiveDMSList.forEach((dms) => {
         const negative = formatting.dmsSetSign(dms, -1)
         const sign = formatting.dmsSign(negative)
         expect(sign).to.equal(-1)
       })
-      negativeDMSList.forEach(dms => {
+      negativeDMSList.forEach((dms) => {
         const negative = formatting.dmsSetSign(dms, -1)
         const sign = formatting.dmsSign(negative)
         expect(sign).to.equal(-1)
       })
     })
     it('set positive', () => {
-      positiveDMSList.forEach(dms => {
+      positiveDMSList.forEach((dms) => {
         const positive = formatting.dmsSetSign(dms, 1)
         const sign = formatting.dmsSign(positive)
         expect(sign).to.equal(1)
       })
-      negativeDMSList.forEach(dms => {
+      negativeDMSList.forEach((dms) => {
         const positive = formatting.dmsSetSign(dms, 1)
         const sign = formatting.dmsSign(positive)
         expect(sign).to.equal(1)

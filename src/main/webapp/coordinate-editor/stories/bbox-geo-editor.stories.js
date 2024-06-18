@@ -43,7 +43,7 @@ stories.addParameters({
   },
 })
 
-coordinateUnitList.forEach(coordinateUnit => {
+coordinateUnitList.forEach((coordinateUnit) => {
   stories.add(coordinateUnit, () => {
     const extent = array('extent', [10, 5, 50, 55])
     const geometry = makeBBoxGeo('id', extent)

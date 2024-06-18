@@ -9,6 +9,7 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "lib": ["es6", "dom", "es2017", "es2018"],
+    "skipLibCheck": true,
     "target": "es5",
     "declaration": true,
     "moduleResolution": "node",

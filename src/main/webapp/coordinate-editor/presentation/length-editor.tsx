@@ -21,14 +21,14 @@ type Props = {
 
 const Root = Common.Row
 const LengthValue = styled(NumberInput)`
-  margin-right: ${props => props.theme.minimumSpacing};
+  margin-right: ${(props) => props.theme.minimumSpacing};
   width: 8rem;
 `
 const UnitContainer = styled.div`
   display: flex;
   margin: 0;
   padding: 0;
-  font-size: ${props => props.theme.minimumFontSize};
+  font-size: ${(props) => props.theme.minimumFontSize};
 `
 
 type SelectEvent = React.FormEvent<HTMLSelectElement>

@@ -10,28 +10,60 @@ describe('ShapeDetector', () => {
   describe('isBoundingBoxFeature', () => {
     it('Clockwise From Bottom Left', () => {
       const feature = new ol.Feature(
-        new ol.geom.Polygon([[[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]])
+        new ol.geom.Polygon([
+          [
+            [0, 0],
+            [0, 1],
+            [1, 1],
+            [1, 0],
+            [0, 0],
+          ],
+        ])
       )
       const actual = shapeDetector.isBoundingBoxFeature(feature)
       expect(actual).to.equal(true)
     })
     it('Clockwise From Top Left', () => {
       const feature = new ol.Feature(
-        new ol.geom.Polygon([[[0, 1], [1, 1], [1, 0], [0, 0], [0, 1]]])
+        new ol.geom.Polygon([
+          [
+            [0, 1],
+            [1, 1],
+            [1, 0],
+            [0, 0],
+            [0, 1],
+          ],
+        ])
       )
       const actual = shapeDetector.isBoundingBoxFeature(feature)
       expect(actual).to.equal(true)
     })
     it('Clockwise From Top Right', () => {
       const feature = new ol.Feature(
-        new ol.geom.Polygon([[[1, 1], [1, 0], [0, 0], [0, 1], [1, 1]]])
+        new ol.geom.Polygon([
+          [
+            [1, 1],
+            [1, 0],
+            [0, 0],
+            [0, 1],
+            [1, 1],
+          ],
+        ])
       )
       const actual = shapeDetector.isBoundingBoxFeature(feature)
       expect(actual).to.equal(true)
     })
     it('Clockwise Bottom Right', () => {
       const feature = new ol.Feature(
-        new ol.geom.Polygon([[[1, 0], [0, 0], [0, 1], [1, 1], [1, 0]]])
+        new ol.geom.Polygon([
+          [
+            [1, 0],
+            [0, 0],
+            [0, 1],
+            [1, 1],
+            [1, 0],
+          ],
+        ])
       )
       const actual = shapeDetector.isBoundingBoxFeature(feature)
       expect(actual).to.equal(true)
@@ -68,14 +100,30 @@ describe('ShapeDetector', () => {
     })
     it('Not a bounding box first and last coordinates', () => {
       const feature = new ol.Feature(
-        new ol.geom.Polygon([[[1, 0.1], [0, 0], [0, 1], [1, 1], [1, 0.1]]])
+        new ol.geom.Polygon([
+          [
+            [1, 0.1],
+            [0, 0],
+            [0, 1],
+            [1, 1],
+            [1, 0.1],
+          ],
+        ])
       )
       const actual = shapeDetector.isBoundingBoxFeature(feature)
       expect(actual).to.equal(false)
     })
     it('Not a bounding box middle coordinate', () => {
       const feature = new ol.Feature(
-        new ol.geom.Polygon([[[1, 0], [0, 1], [0, 1], [1, 1], [1, 0]]])
+        new ol.geom.Polygon([
+          [
+            [1, 0],
+            [0, 1],
+            [0, 1],
+            [1, 1],
+            [1, 0],
+          ],
+        ])
       )
       const actual = shapeDetector.isBoundingBoxFeature(feature)
       expect(actual).to.equal(false)
@@ -83,13 +131,22 @@ describe('ShapeDetector', () => {
   })
   describe('shapeFromFeature', () => {
     it('Line', () => {
-      const feature = new ol.Feature(new ol.geom.LineString([[5, 5], [0, 0]]))
+      const feature = new ol.Feature(
+        new ol.geom.LineString([
+          [5, 5],
+          [0, 0],
+        ])
+      )
       const actual = shapeDetector.shapeFromFeature(feature)
       expect(actual).to.equal('Line')
     })
     it('Line closed loop', () => {
       const feature = new ol.Feature(
-        new ol.geom.LineString([[5, 5], [0, 0], [5, 5]])
+        new ol.geom.LineString([
+          [5, 5],
+          [0, 0],
+          [5, 5],
+        ])
       )
       const actual = shapeDetector.shapeFromFeature(feature)
       expect(actual).to.equal('Line')
@@ -135,7 +192,14 @@ describe('ShapeDetector', () => {
     })
     it('Polygon triangle', () => {
       const feature = new ol.Feature(
-        new ol.geom.Polygon([[[0.0, 0.0], [3.0, 3.0], [3.0, 0.0], [0.0, 0.0]]])
+        new ol.geom.Polygon([
+          [
+            [0.0, 0.0],
+            [3.0, 3.0],
+            [3.0, 0.0],
+            [0.0, 0.0],
+          ],
+        ])
       )
       const actual = shapeDetector.shapeFromFeature(feature)
       expect(actual).to.equal('Polygon')

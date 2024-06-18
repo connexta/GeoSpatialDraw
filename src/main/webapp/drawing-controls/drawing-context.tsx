@@ -230,13 +230,7 @@ class DrawingContext {
   }
 
   circleRadiusToMeters(radius: number): number {
-    return (
-      radius *
-      this.map
-        .getView()
-        .getProjection()
-        .getMetersPerUnit()
-    )
+    return radius * this.map.getView().getProjection().getMetersPerUnit()
   }
 }
 

@@ -44,7 +44,7 @@ stories.addParameters({
   },
 })
 
-coordinateUnitList.forEach(coordinateUnit => {
+coordinateUnitList.forEach((coordinateUnit) => {
   stories.add(coordinateUnit, () => {
     const lat = number('lat', 50)
     const lon = number('lon', 50)

@@ -21,7 +21,13 @@ const updateGeoWithExtentBBox = (
 ): GeometryJSON => {
   const { north, south, east, west } = extentToBBox(extent)
   const coordinates: number[][][] = [
-    [[west, south], [west, north], [east, north], [east, south], [west, south]],
+    [
+      [west, south],
+      [west, north],
+      [east, north],
+      [east, south],
+      [west, south],
+    ],
   ]
   return {
     ...geo,
@@ -33,7 +39,7 @@ const updateGeoWithExtentBBox = (
   }
 }
 
-const finalizeGeo: FinalizeGeo = geo => {
+const finalizeGeo: FinalizeGeo = (geo) => {
   const { north, south, east, west } = extentToBBox(geo.bbox)
   const orientationCorrectedBBox: Extent = [
     Math.min(east, west),
@@ -53,7 +59,7 @@ class BBoxGeoEditor extends React.Component<Props> {
     const extent = geo.bbox
     return (
       <BBoxEditor
-        setExtent={extent => {
+        setExtent={(extent) => {
           onUpdateGeo(updateGeoWithExtentBBox(geo, extent))
         }}
         extent={extent}

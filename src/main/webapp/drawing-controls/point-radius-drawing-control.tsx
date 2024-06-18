@@ -100,7 +100,7 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     this.mouseDragActive = true
     const feature = this.getFeatureFromDrawEvent(e)
     const source = this.context.getSource()
-    source.getFeatures().forEach(f => source.removeFeature(f))
+    source.getFeatures().forEach((f) => source.removeFeature(f))
     this.initalCenter = this.toLine(feature).getCoordinates()[0]
     this.startDrawAnimation(feature)
   }
@@ -112,7 +112,7 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     const clickedPoint = line.getClosestPoint(e.mapBrowserEvent.coordinate)
     const distanceMap = line
       .getCoordinates()
-      .map(point => turf.distance(point, clickedPoint))
+      .map((point) => turf.distance(point, clickedPoint))
     feature.set('hidden', distanceMap[0] < distanceMap[1])
     this.startDrawAnimation(feature)
   }

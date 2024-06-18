@@ -44,7 +44,7 @@ stories.addParameters({
   },
 })
 
-coordinateUnitList.forEach(coordinateUnit => {
+coordinateUnitList.forEach((coordinateUnit) => {
   stories.add(coordinateUnit, () => {
     const coordinatesText = text(
       'coordinates',
@@ -57,7 +57,12 @@ coordinateUnitList.forEach(coordinateUnit => {
       ]
     `
     )
-    let coordinates = [[10, 15], [10.5, 15.8], [11, 16], [10, 14.925]]
+    let coordinates = [
+      [10, 15],
+      [10.5, 15.8],
+      [11, 16],
+      [10, 14.925],
+    ]
     try {
       coordinates = JSON.parse(coordinatesText)
     } catch (e) {

@@ -48,7 +48,7 @@ const Root = styled.div`
   min-height: 20rem;
 `
 const InputGroup = styled.label`
-  margin: ${props => props.theme.minimumSpacing} 0;
+  margin: ${(props) => props.theme.minimumSpacing} 0;
   padding: 0;
   display: flex;
 `
@@ -62,7 +62,7 @@ const List = styled.ul`
   flex-basis: 8rem;
   flex-direction: column;
   overflow-y: auto;
-  background-color: ${props => props.theme.backgroundSlideout};
+  background-color: ${(props) => props.theme.backgroundSlideout};
 `
 const ListItem = styled.li`
   margin: 0;
@@ -77,10 +77,10 @@ const Button = styled.div<{ onClick: () => void; title: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${props => props.theme.mediumFontSize};
-  padding: ${props => props.theme.minimumSpacing};
+  font-size: ${(props) => props.theme.mediumFontSize};
+  padding: ${(props) => props.theme.minimumSpacing};
   margin: 0;
-  opacity: ${props => props.theme.minimumOpacity};
+  opacity: ${(props) => props.theme.minimumOpacity};
   cursor: pointer;
   :hover {
     opacity: 1;
@@ -88,7 +88,7 @@ const Button = styled.div<{ onClick: () => void; title: string }>`
 `
 const CoordinateButton = styled(ToggleButton)`
   width: 100%;
-  font-size: ${props => props.theme.minimumFontSize};
+  font-size: ${(props) => props.theme.minimumFontSize};
 `
 
 const FlatCoordinateListEditor: React.SFC<Props> = ({

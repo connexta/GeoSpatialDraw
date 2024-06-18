@@ -46,7 +46,7 @@ const BBoxEditor: React.SFC<Props> = ({ setExtent, extent, unit }) => {
       south={south}
       east={east}
       west={west}
-      setBBox={bbox => {
+      setBBox={(bbox) => {
         setExtent(bboxToExtent(bbox))
       }}
     />

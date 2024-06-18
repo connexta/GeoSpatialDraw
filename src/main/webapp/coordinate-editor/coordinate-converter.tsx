@@ -37,12 +37,8 @@ const latLonTo = {
       precision
     ),
   UTM: (lat: number, lon: number): UTM => {
-    const {
-      easting,
-      northing,
-      zoneNumber,
-      northPole,
-    } = UnitConverter.LLtoUTMUPSObject(lat, lon)
+    const { easting, northing, zoneNumber, northPole } =
+      UnitConverter.LLtoUTMUPSObject(lat, lon)
     return {
       easting,
       northing,

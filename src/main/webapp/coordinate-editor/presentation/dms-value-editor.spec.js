@@ -33,51 +33,39 @@ describe('<DMSValueEditor />', () => {
     it('positive value', () => {
       const wrapper = getWrapper(30, 15, 7.5)
       expect(
-        wrapper
-          .find('HeadingButton[isSelected=true]')
-          .childAt(0)
-          .text()
+        wrapper.find('HeadingButton[isSelected=true]').childAt(0).text()
       ).to.equal('+')
     })
     it('negative value', () => {
       const wrapper = getWrapper(-30, 15, 7.5)
       expect(
-        wrapper
-          .find('HeadingButton[isSelected=true]')
-          .childAt(0)
-          .text()
+        wrapper.find('HeadingButton[isSelected=true]').childAt(0).text()
       ).to.equal('-')
     })
   })
   describe('setValue', () => {
     const getValueWrapper = (done, expectedDMS) =>
-      getWrapper(5, 5, 5, dms => {
+      getWrapper(5, 5, 5, (dms) => {
         expect(dms).to.deep.equal(expectedDMS)
         done()
       })
-    it('degree', done => {
+    it('degree', (done) => {
       const wrapper = getValueWrapper(done, {
         degree: 11,
         minute: 5,
         second: 5,
       })
-      wrapper
-        .find('SmallInput')
-        .at(0)
-        .prop('onChange')(11)
+      wrapper.find('SmallInput').at(0).prop('onChange')(11)
     })
-    it('minute', done => {
+    it('minute', (done) => {
       const wrapper = getValueWrapper(done, {
         degree: 5,
         minute: 45,
         second: 5,
       })
-      wrapper
-        .find('SmallInput')
-        .at(1)
-        .prop('onChange')(45)
+      wrapper.find('SmallInput').at(1).prop('onChange')(45)
     })
-    it('second', done => {
+    it('second', (done) => {
       const wrapper = getValueWrapper(done, {
         degree: 5,
         minute: 5,
@@ -85,27 +73,21 @@ describe('<DMSValueEditor />', () => {
       })
       wrapper.find('WideInput').prop('onChange')(78)
     })
-    it('positive', done => {
+    it('positive', (done) => {
       const wrapper = getValueWrapper(done, {
         degree: 5,
         minute: 5,
         second: 5,
       })
-      wrapper
-        .find('HeadingButton')
-        .at(1)
-        .prop('onClick')()
+      wrapper.find('HeadingButton').at(1).prop('onClick')()
     })
-    it('negative', done => {
+    it('negative', (done) => {
       const wrapper = getValueWrapper(done, {
         degree: -5,
         minute: -5,
         second: -5,
       })
-      wrapper
-        .find('HeadingButton')
-        .at(0)
-        .prop('onClick')()
+      wrapper.find('HeadingButton').at(0).prop('onClick')()
     })
   })
 })

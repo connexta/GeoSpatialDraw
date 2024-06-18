@@ -26,7 +26,14 @@ class PolygonDrawingControl extends ModifiableDrawingControl {
   }
 
   protected makeEmptyFeature(): ol.Feature {
-    return new ol.Feature(new ol.geom.Polygon([[[0, 0], [0, 0]]]))
+    return new ol.Feature(
+      new ol.geom.Polygon([
+        [
+          [0, 0],
+          [0, 0],
+        ],
+      ])
+    )
   }
 }
 

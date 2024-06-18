@@ -33,11 +33,9 @@ const renderChildren = (
   children: React.ReactNode,
   map: ol.Map
 ): React.ReactNode =>
-  React.Children.map(
-    children,
-    child =>
-      // @ts-ignore (`yarn test` doesn't like this)
-      React.isValidElement(child) ? React.cloneElement(child, { map }) : null
+  React.Children.map(children, (child) =>
+    // @ts-ignore (`yarn test` doesn't like this)
+    React.isValidElement(child) ? React.cloneElement(child, { map }) : null
   )
 
 class Map extends React.Component<Props, State> {

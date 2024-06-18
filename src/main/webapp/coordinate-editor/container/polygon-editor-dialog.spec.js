@@ -10,7 +10,13 @@ describe('<PolygonEditorDialog />', () => {
   beforeEach(() => {
     startGeo = makeEmptyGeometry('', 'Line')
     startGeo.geometry.coordinates = [
-      [[10, 12], [30, 50], [45, 34], [32, 24], [10, 12]],
+      [
+        [10, 12],
+        [30, 50],
+        [45, 34],
+        [32, 24],
+        [10, 12],
+      ],
     ]
     startGeo.bbox = [10, 12, 45, 50]
   })

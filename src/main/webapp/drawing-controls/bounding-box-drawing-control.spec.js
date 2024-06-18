@@ -14,21 +14,29 @@ describe('BoundingBoxDrawingControl', () => {
     },
     geometry: {
       type: 'Polygon',
-      coordinates: [[[10, 10], [50, 10], [50, 50], [10, 50], [10, 10]]],
+      coordinates: [
+        [
+          [10, 10],
+          [50, 10],
+          [50, 50],
+          [10, 50],
+          [10, 10],
+        ],
+      ],
     },
     bbox: [10, 10, 50, 50],
   })
   describe('constructor', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = geoJSON => {}
+      const receiver = (geoJSON) => {}
       const control = new BoundingBoxDrawingControl(context, receiver)
     })
   })
   describe('setGeo', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = geoJSON => {}
+      const receiver = (geoJSON) => {}
       const control = new BoundingBoxDrawingControl(context, receiver)
       control.setGeo(makePolygonJSON())
       const expected = makePolygonJSON()
@@ -46,7 +54,7 @@ describe('BoundingBoxDrawingControl', () => {
   describe('startDrawing', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = geoJSON => {}
+      const receiver = (geoJSON) => {}
       const control = new BoundingBoxDrawingControl(context, receiver)
       control.startDrawing()
       expect(context.getMethodCalls().addInteractions.length).to.equal(0)
@@ -63,7 +71,7 @@ describe('BoundingBoxDrawingControl', () => {
   describe('cancelDrawing', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = geoJSON => {}
+      const receiver = (geoJSON) => {}
       const control = new BoundingBoxDrawingControl(context, receiver)
       control.cancelDrawing()
       expect(context.getMethodCalls().removeListeners.length).to.equal(1)
@@ -84,14 +92,22 @@ describe('BoundingBoxDrawingControl', () => {
       },
       geometry: {
         type: 'Polygon',
-        coordinates: [[[11, 20], [50, 20], [50, 60], [11, 60], [11, 20]]],
+        coordinates: [
+          [
+            [11, 20],
+            [50, 20],
+            [50, 60],
+            [11, 60],
+            [11, 20],
+          ],
+        ],
       },
       bbox: makeExtent(),
     })
     it('default', () => {
       const context = new MockDrawingContext()
       let updated = null
-      const receiver = geoJSON => {
+      const receiver = (geoJSON) => {
         updated = geoJSON
       }
       const control = new BoundingBoxDrawingControl(context, receiver)
@@ -104,7 +120,7 @@ describe('BoundingBoxDrawingControl', () => {
     it('startDrawing -> extentChanged', () => {
       const context = new MockDrawingContext()
       let updated = null
-      const receiver = geoJSON => {
+      const receiver = (geoJSON) => {
         updated = geoJSON
       }
       const control = new BoundingBoxDrawingControl(context, receiver)

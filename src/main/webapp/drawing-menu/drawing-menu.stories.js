@@ -30,10 +30,10 @@ const MenuContainer = styled.div`
   height: 45px;
 `
 
-const featureColor = feature =>
+const featureColor = (feature) =>
   feature.get('hidden') ? 'rgba(0, 0, 0, 0)' : feature.get('color')
 
-const STYLE = feature =>
+const STYLE = (feature) =>
   new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: featureColor(feature),
@@ -134,10 +134,10 @@ stories.addParameters({
   },
 })
 
-const renderMap = DrawingMenuWithMap => (
+const renderMap = (DrawingMenuWithMap) => (
   <React.Fragment>
     <Map
-      getOlMap={olMap => {
+      getOlMap={(olMap) => {
         map = olMap
       }}
       projection="EPSG:4326"
@@ -191,7 +191,13 @@ stories.add('editing a geo', () => {
   switch (shape) {
     case 'Polygon':
       geoJSON.geometry.coordinates = [
-        [[-92, 43], [-98, 50], [-103, 39], [-100, 33], [-92, 43]],
+        [
+          [-92, 43],
+          [-98, 50],
+          [-103, 39],
+          [-100, 33],
+          [-92, 43],
+        ],
       ]
       geoJSON.bbox = turf.bbox(geoJSON)
       geoJSON.properties.buffer = buffer

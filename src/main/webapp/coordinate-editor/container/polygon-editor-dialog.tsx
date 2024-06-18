@@ -9,7 +9,7 @@ import {
 import { CoordinateUnit } from '../units'
 
 const MIN_POLYGON_COORDINATE_LENGTH = 2
-const finalizeGeo: FinalizeGeo = geo => geo
+const finalizeGeo: FinalizeGeo = (geo) => geo
 
 type Props = {
   /** Geometry GeoJSON */
@@ -20,10 +20,10 @@ type Props = {
   onUpdateGeo: (geo: GeometryJSON) => void
 }
 
-const PolygonGeoEditor: React.SFC<Props> = props => (
+const PolygonGeoEditor: React.SFC<Props> = (props) => (
   <FlatCoordinateListGeoEditor
     {...props}
-    getCoordinatesFromGeo={geo => {
+    getCoordinatesFromGeo={(geo) => {
       const coordinates = (geo.geometry as turf.Polygon)
         .coordinates[0] as Coordinates
       return coordinates.length < MIN_POLYGON_COORDINATE_LENGTH

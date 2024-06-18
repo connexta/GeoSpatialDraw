@@ -30,7 +30,7 @@ describe('PointDrawingControl', () => {
   })
   let context = null
   let recievedGeo = null
-  const receiver = geoJSON => {
+  const receiver = (geoJSON) => {
     recievedGeo = geoJSON
   }
   let control = null

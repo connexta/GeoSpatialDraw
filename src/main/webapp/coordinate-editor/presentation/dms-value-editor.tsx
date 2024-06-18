@@ -21,12 +21,12 @@ type Props = BaseProps & {
 
 const SmallInput = styled(NumberInput)`
   width: 3em;
-  margin-right: ${props => props.theme.minimumSpacing};
+  margin-right: ${(props) => props.theme.minimumSpacing};
 `
 SmallInput.displayName = 'SmallInput'
 const WideInput = styled(NumberInput)`
   width: 5em;
-  margin-right: ${props => props.theme.minimumSpacing};
+  margin-right: ${(props) => props.theme.minimumSpacing};
 `
 WideInput.displayName = 'WideInput'
 const HeadingButton = Common.SpacedToggleButton
@@ -109,7 +109,7 @@ const DMSValueEditor: React.SFC<Props> = ({
   )
 }
 
-const DMSLatitudeEditor: React.SFC<BaseProps> = props => (
+const DMSLatitudeEditor: React.SFC<BaseProps> = (props) => (
   <DMSValueEditor
     maxDegrees={90}
     negativeHeadingName="S"
@@ -120,7 +120,7 @@ const DMSLatitudeEditor: React.SFC<BaseProps> = props => (
   />
 )
 
-const DMSLongitudeEditor: React.SFC<BaseProps> = props => (
+const DMSLongitudeEditor: React.SFC<BaseProps> = (props) => (
   <DMSValueEditor
     maxDegrees={180}
     negativeHeadingName="W"

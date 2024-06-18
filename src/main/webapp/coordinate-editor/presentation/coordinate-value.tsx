@@ -28,7 +28,7 @@ const Cell = styled.div`
   justify-content: flex-start;
   margin: 0;
   padding: 0;
-  margin-right: ${props => props.theme.minimumSpacing};
+  margin-right: ${(props) => props.theme.minimumSpacing};
 `
 
 const CoordinateValue: React.SFC<Props> = ({ lat, lon, unit }) => {
