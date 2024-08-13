@@ -75,7 +75,7 @@ const makeEmptyGeometry = (
     ...initialProperties,
     shape,
     id,
-    buffer: shape === 'Point Radius' ? Number.MIN_VALUE : 0,
+    buffer: 0,
     bufferUnit: METERS,
   },
   bbox: [0, 0, 0, 0],
