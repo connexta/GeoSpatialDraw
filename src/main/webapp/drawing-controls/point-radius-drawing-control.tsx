@@ -40,22 +40,20 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
   }
 
   private startDrawAnimation(feature: ol.Feature) {
-    if (this.properties.buffer) {
-      let revision = feature.getRevision()
-      this.animationFrame = () => {
-        const update = feature.getRevision()
-        if (update !== revision) {
-          revision = update
-          const pointFeature = new ol.Feature(
-            this.updatePointFromRadiusLine(this.toLine(feature))
-          )
-          this.applyPropertiesToFeature(pointFeature)
-          this.context.updateBufferFeature(pointFeature, false)
-        }
-        this.animationFrameId = requestAnimationFrame(this.animationFrame)
+    let revision = feature.getRevision()
+    this.animationFrame = () => {
+      const update = feature.getRevision()
+      if (update !== revision) {
+        revision = update
+        const pointFeature = new ol.Feature(
+          this.updatePointFromRadiusLine(this.toLine(feature))
+        )
+        this.applyPropertiesToFeature(pointFeature)
+        this.context.updateBufferFeature(pointFeature, false)
       }
-      this.animationFrame()
+      this.animationFrameId = requestAnimationFrame(this.animationFrame)
     }
+    this.animationFrame()
   }
 
   private stopDrawAnimation(feature: ol.Feature): GeometryJSON {
