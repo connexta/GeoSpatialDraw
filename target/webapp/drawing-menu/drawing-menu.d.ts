@@ -1,0 +1,44 @@
+import * as React from 'react';
+import * as ol from 'openlayers';
+import { Shape } from '../shape-utils';
+import { DrawingContext, DrawingControl, UpdatedGeoReceiver } from '../drawing-controls';
+import { HTMLAttributes } from '../internal/html';
+import { GeometryJSON } from '../geometry';
+type Props = HTMLAttributes & {
+    shape: Shape | null;
+    map: ol.Map;
+    isActive: boolean;
+    showCoordinateEditor?: boolean;
+    saveAndContinue?: boolean;
+    title?: string;
+    geometry: GeometryJSON | null;
+    updatedBuffer?: number;
+    updatedBufferUnit?: string;
+    toggleCoordinateEditor?: () => void;
+    onCancel: () => void;
+    onOk: () => void;
+    onSetShape: (shape: Shape) => void;
+    onUpdate: UpdatedGeoReceiver;
+    disabledShapes?: Shape[];
+    mapStyle: ol.StyleFunction | ol.style.Style | ol.style.Style[];
+};
+type DrawingControlMap = Map<Shape, DrawingControl>;
+declare class DrawingMenu extends React.Component<Props> {
+    drawingContext: DrawingContext;
+    controlsMap: DrawingControlMap;
+    setShape: (shape: Shape) => void;
+    acceptEdit: () => void;
+    cancelClick: () => void;
+    constructor(props: Props);
+    drawShape(): void;
+    updateBuffer(buffer: number, bufferUnit: string): void;
+    cancelShapeDrawing(): void;
+    setDrawingActive(active: boolean): void;
+    isDrawing(): boolean;
+    componentDidMount(): void;
+    componentWillUnmount(): void;
+    componentDidUpdate(prevProps: Props): void;
+    renderShapeButton(shape: Shape, icon: any): JSX.Element | null;
+    render(): JSX.Element;
+}
+export default DrawingMenu;
