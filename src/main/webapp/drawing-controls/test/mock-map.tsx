@@ -1,5 +1,5 @@
 class MockMap {
-  testData = null
+  testData: any = null // Change to 'any' type or define a proper interface
   constructor() {
     this.testData = {
       layerCount: 0,
@@ -12,11 +12,11 @@ class MockMap {
       },
     }
   }
-  addInteraction(i) {
+  addInteraction(i: any) {
     this.testData.interactions[i] = i
     this.testData.interactionsCount++
   }
-  removeInteraction(i) {
+  removeInteraction(i: any) {
     this.testData.interactions[i]
     this.testData.interactionsCount--
   }

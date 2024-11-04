@@ -34,16 +34,12 @@
   "scripts": {
     "fmt": "ace format -w",
     "prestart": "ace disable-idp",
-    "pretest": "ace bundle --env=test",
-    "test": "ace test",
-    "start": "yarn storybook",
+    "test": "ace bundle --env=test && ace test",
     "start:test": "ace start --env=test",
-    "storybook": "ace storybook",
     "prebuild": "rimraf ./target",
     "build": "tsc -p tsconfig.json",
-    "build:docs": "ace storybook --static && typedoc",
     "build:verify": "yarn run fmt && yarn run test && yarn run build",
-    "build:all": "yarn run build:verify && yarn run build:docs",
+    "build:all": "yarn run build:verify",
     "prepublish": "yarn build:all",
     "m2": "yarn install:m2",
     "install:m2": "ace clean && ace bundle && ace package && ace install"
@@ -70,12 +66,15 @@
     "@connexta/ace": "git+https://github.com/connexta/ace.git#4cc376863e82757699cdaa1301f30266e66a1efe",
     "@emotion/core": "10.0.16",
     "@emotion/styled": "10.0.15",
+    "@types/chai": "4.2.14",
+    "@types/enzyme-adapter-react-16": "1.0.9",
     "@types/lodash": "4.14.137",
+    "@types/mocha": "8.0.3",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.8.4",
     "@types/react-intl": "2.3.12",
-    "@types/styled-components": "4.1.8",
-    "chai": "4.2.0",
+    "@types/styled-components": "4.4.1",
+    "chai": "4.1.1",
     "emotion": "10.0.14",
     "emotion-theming": "10.0.14",
     "enzyme": "3.10.0",
@@ -86,11 +85,21 @@
     "react-textarea-autosize": "7.1.0",
     "recompose": "0.30.0",
     "rimraf": "3.0.0",
-    "styled-components": "4.3.2",
+    "styled-components": "4.4.1",
     "typedoc": "0.15.0",
-    "typescript": "5.4.5"
+    "typescript": "5.6.3"
   },
   "peerDependencies": {
     "styled-components": ">= 4"
+  },
+  "context-path": "/geospatialdraw",
+  "ace": {
+    "files": [
+      "src/main/resources",
+      "src/main/webapp",
+      "target/webapp"
+    ],
+    "testPath": "src/",
+    "testSetupPath": "src/main/webapp/internal/tests/index.tsx"
   }
 }

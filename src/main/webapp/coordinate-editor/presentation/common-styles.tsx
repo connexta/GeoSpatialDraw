@@ -35,11 +35,11 @@ const Label = styled.div`
 const CompactLabel = styled(Label)`
   width: 4em;
 `
-const SpacedToggleButton = styled(ToggleButton)`
+const SpacedToggleButton = styled(ToggleButton as any)`
   margin: 0;
-  margin-right: ${(props) => props.theme.minimumSpacing};
-  font-size: ${(props) => props.theme.minimumFontSize};
-  padding: 0 calc(${(props) => props.theme.minimumSpacing} / 2);
+  margin-right: ${(props: any) => props.theme.minimumSpacing};
+  font-size: ${(props: any) => props.theme.minimumFontSize};
+  padding: 0 calc(${(props: any) => props.theme.minimumSpacing} / 2);
   height: auto;
 `
 const SpacedInputLabelRow = styled.label`

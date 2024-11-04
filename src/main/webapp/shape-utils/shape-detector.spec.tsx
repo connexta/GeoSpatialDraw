@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import ShapeDetector from './shape-detector'
 
 describe('ShapeDetector', () => {
-  let shapeDetector = null
+  let shapeDetector: ShapeDetector = new ShapeDetector()
   beforeEach(() => {
     shapeDetector = new ShapeDetector()
   })
@@ -201,6 +201,7 @@ describe('ShapeDetector', () => {
           ],
         ])
       )
+
       const actual = shapeDetector.shapeFromFeature(feature)
       expect(actual).to.equal('Polygon')
     })

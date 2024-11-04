@@ -1,12 +1,12 @@
 import '../../internal/tests'
-import React from 'react'
+import * as React from 'react'
 import { expect } from 'chai'
 import { shallow } from 'enzyme'
 import { makeEmptyGeometry } from '../../geometry'
 import { PolygonEditorDialog } from './polygon-editor-dialog'
 
 describe('<PolygonEditorDialog />', () => {
-  let startGeo
+  let startGeo: any
   beforeEach(() => {
     startGeo = makeEmptyGeometry('', 'Line')
     startGeo.geometry.coordinates = [
@@ -22,6 +22,7 @@ describe('<PolygonEditorDialog />', () => {
   })
   it('render', () => {
     const wrapper = shallow(
+      // @ts-ignore
       <PolygonEditorDialog geo={startGeo} onOk={() => {}} />
     )
     expect(wrapper.exists()).to.equal(true)

@@ -1,11 +1,12 @@
 import '../../internal/tests'
-import React from 'react'
+import * as React from 'react'
 import { expect } from 'chai'
 import { shallow } from 'enzyme'
 import { makeEmptyGeometry } from '../../geometry'
-import { LineEditorDialog } from './line-editor-dialog'
+import { PointEditorDialog } from './point-editor-dialog'
+import { LAT_LON } from '../units'
 
-describe('<LineEditorDialog />', () => {
+describe('<PointEditorDialog />', () => {
   it('render', () => {
     const startGeo = makeEmptyGeometry('', 'Line')
     startGeo.geometry.coordinates = [
@@ -16,7 +17,15 @@ describe('<LineEditorDialog />', () => {
       [10, 12],
     ]
     startGeo.bbox = [10, 12, 45, 50]
-    const wrapper = shallow(<LineEditorDialog geo={startGeo} onOk={() => {}} />)
+    const wrapper = shallow(
+      // @ts-ignore
+      <PointEditorDialog
+        geo={startGeo}
+        // @ts-ignore
+        coordinateUnit={LAT_LON}
+        onUpdateGeo={() => {}}
+      />
+    )
     expect(wrapper.exists()).to.equal(true)
   })
 })

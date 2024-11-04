@@ -1,8 +1,9 @@
 import '../../internal/tests'
-import React from 'react'
+import * as React from 'react'
 import { expect } from 'chai'
 import { shallow } from 'enzyme'
-import { LAT_LON, makeEmptyGeometry } from '../../geometry'
+import { makeEmptyGeometry } from '../../geometry'
+import { LAT_LON } from '../units'
 import { FlatCoordinateListGeoEditor } from './flat-coordinate-list-geo-editor'
 
 describe('<FlatCoordinateListGeoEditor />', () => {
@@ -18,7 +19,9 @@ describe('<FlatCoordinateListGeoEditor />', () => {
     startGeo.bbox = [10, 12, 45, 50]
     startGeo.properties.buffer = 1
     startGeo.properties.bufferUnit = 'meters'
+
     const wrapper = shallow(
+      // @ts-ignore
       <FlatCoordinateListGeoEditor
         geo={startGeo}
         coordinateUnit={LAT_LON}
@@ -29,6 +32,7 @@ describe('<FlatCoordinateListGeoEditor />', () => {
           [45, 34],
           [32, 24],
         ]}
+        // @ts-ignore
         updateGeoCoordinates={() => {}}
       />
     )
@@ -58,12 +62,14 @@ describe('<FlatCoordinateListGeoEditor />', () => {
       [45, 34],
       [32, 24],
     ]
-    const getWrapper = (expected, onUpdateGeo) => {
+    const getWrapper = (expected: any, onUpdateGeo: any) => {
       const startGeo = makeEmptyGeometry('', 'Line')
       startGeo.geometry.coordinates = startCoordinates
       startGeo.bbox = [10, 12, 45, 50]
       return shallow(
+        // @ts-ignore
         <FlatCoordinateListGeoEditor
+          // @ts-ignore
           getCoordinatesFromGeo={() => startCoordinates}
           updateGeoCoordinates={(geo, coordinates) => {
             expect(coordinates).to.deep.equal(expected)
@@ -76,23 +82,25 @@ describe('<FlatCoordinateListGeoEditor />', () => {
       )
     }
     it('setBuffer', (done) => {
-      const wrapper = getWrapper(startCoordinates, (geo) => {
+      const wrapper = getWrapper(startCoordinates, (geo: any) => {
         expect(geo.properties.buffer).to.equal(12.7)
         done()
       })
+      // @ts-ignore
       wrapper.find('FlatCoordinateListEditor').prop('setBuffer')(12.7)
     })
     it('setUnit', (done) => {
-      const wrapper = getWrapper(startCoordinates, (geo) => {
+      const wrapper = getWrapper(startCoordinates, (geo: any) => {
         expect(geo.properties.bufferUnit).to.equal('nautical miles')
         done()
       })
+      // @ts-ignore
       wrapper.find('FlatCoordinateListEditor').prop('setUnit')('nautical miles')
     })
     describe('edit coordinates', () => {
       const testSetCoordinateFactory =
-        (action) => (done, editIndex, expected) => {
-          const updateGeo = (geo) => {
+        (action: any) => (done: any, editIndex: any, expected: any) => {
+          const updateGeo = (geo: any) => {
             done()
             return geo
           }

@@ -68,7 +68,9 @@ describe('shape-factory', () => {
           [20, 60],
           [30, 80],
         ],
+        // @ts-ignore
         5,
+        // @ts-ignore
         'kilometers'
       )
       expect(geo.geometry.type).to.equal('LineString')

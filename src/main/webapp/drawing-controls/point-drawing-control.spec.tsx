@@ -1,21 +1,14 @@
 import * as ol from 'openlayers'
 import { expect } from 'chai'
 import MockDrawingContext from './test/mock-drawing-context'
-import PolygonDrawingControl from './polygon-drawing-control'
+import PointDrawingControl from './point-drawing-control'
 
-describe('PolygonDrawingControl', () => {
+describe('PointDrawingControl', () => {
   const makeFeature = () =>
     new ol.Feature({
-      geometry: new ol.geom.Polygon([
-        [
-          [50, 50],
-          [10, 10],
-          [20, 20],
-          [50, 50],
-        ],
-      ]),
+      geometry: new ol.geom.Point([50, 50]),
       color: '#996600',
-      shape: 'Polygon',
+      shape: 'Point',
       id: '',
       buffer: 0,
       bufferUnit: 'meters',
@@ -24,34 +17,30 @@ describe('PolygonDrawingControl', () => {
     type: 'Feature',
     properties: {
       color: '#996600',
-      shape: 'Polygon',
+      shape: 'Point',
       id: '',
       buffer: 0,
       bufferUnit: 'meters',
     },
     geometry: {
-      type: 'Polygon',
-      coordinates: [
-        [
-          [50, 50],
-          [10, 10],
-          [20, 20],
-          [50, 50],
-        ],
-      ],
+      type: 'Point',
+      coordinates: [50, 50],
     },
-    bbox: [10, 10, 50, 50],
+    bbox: [50, 50, 50, 50],
   })
-  let context = null
-  let recievedGeo = null
-  const receiver = (geoJSON) => {
+  let context: MockDrawingContext = new MockDrawingContext()
+  let recievedGeo: any = null
+  const receiver = (geoJSON: any) => {
     recievedGeo = geoJSON
   }
-  let control = null
+  let control: PointDrawingControl = new PointDrawingControl(
+    context as any,
+    receiver
+  )
   beforeEach(() => {
     recievedGeo = null
     context = new MockDrawingContext()
-    control = new PolygonDrawingControl(context, receiver)
+    control = new PointDrawingControl(context as any, receiver)
   })
   describe('constructor', () => {
     it('default', () => {
@@ -69,22 +58,13 @@ describe('PolygonDrawingControl', () => {
       expect(context.getMethodCalls().updateFeature.length).to.equal(1)
     })
     it('startDrawing -> onCompleteDrawing', () => {
-      const startGeo = makeGeoJSON()
-      startGeo.geometry.coordinates = [
-        [
-          [88, 5],
-          [22, 15],
-          [64, 20],
-          [88, 5],
-        ],
-      ]
       control.startDrawing()
-      control.setGeo(startGeo)
+      // @ts-ignore
+      control.setGeo(makeGeoJSON())
       control.onCompleteDrawing({
         feature: makeFeature(),
       })
       const expected = makeGeoJSON()
-      expected.properties.color = '#996600'
       expect(recievedGeo).to.deep.equal(expected)
     })
   })
@@ -101,6 +81,7 @@ describe('PolygonDrawingControl', () => {
   })
   describe('setGeo', () => {
     it('default', () => {
+      // @ts-ignore
       control.setGeo(makeGeoJSON())
       expect(context.getMethodCalls().updateFeature.length).to.equal(1)
       expect(context.getMethodCalls().removeFeature.length).to.equal(0)

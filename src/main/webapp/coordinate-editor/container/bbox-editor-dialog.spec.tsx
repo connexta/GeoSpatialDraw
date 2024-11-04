@@ -1,8 +1,9 @@
 import '../../internal/tests'
-import React from 'react'
+import * as React from 'react'
 import { expect } from 'chai'
 import { shallow } from 'enzyme'
-import { LAT_LON, makeEmptyGeometry } from '../../geometry'
+import { makeEmptyGeometry } from '../../geometry'
+import { LAT_LON } from '../units'
 import {
   BBoxEditorDialog,
   updateGeoWithExtentBBox,
@@ -10,7 +11,7 @@ import {
 } from './bbox-editor-dialog'
 
 describe('bboxEditorDialog', () => {
-  let startGeo
+  let startGeo: any
   beforeEach(() => {
     startGeo = makeEmptyGeometry('', 'Polygon')
     startGeo.geometry.coordinates = [
@@ -27,8 +28,11 @@ describe('bboxEditorDialog', () => {
   describe('<BBoxEditorDialog />', () => {
     it('render', () => {
       const wrapper = shallow(
+        // @ts-ignore
         <BBoxEditorDialog
+          // @ts-ignore
           geo={startGeo}
+          // @ts-ignore
           coordinateUnit={LAT_LON}
           onUpdateGeo={() => {}}
         />
@@ -38,6 +42,7 @@ describe('bboxEditorDialog', () => {
   })
   describe('updateGeoWithExtentBBox', () => {
     it('default', () => {
+      // @ts-ignore
       const updated = updateGeoWithExtentBBox(startGeo, [-5, -10, 5, 10])
       expect(updated.bbox).to.deep.equal([-5, -10, 5, 10])
       expect(updated.geometry.coordinates).to.deep.equal([
@@ -53,6 +58,7 @@ describe('bboxEditorDialog', () => {
   })
   describe('finalizeGeo', () => {
     it('reversed coordinates', () => {
+      // @ts-ignore
       const geo = updateGeoWithExtentBBox(startGeo, [5, 10, -5, -10])
       const updated = finalizeGeo(geo)
       expect(updated.bbox).to.deep.equal([-5, -10, 5, 10])
@@ -67,6 +73,7 @@ describe('bboxEditorDialog', () => {
       ])
     })
     it('half reversed coordinates', () => {
+      // @ts-ignore
       const geo = updateGeoWithExtentBBox(startGeo, [-5, 10, 5, -10])
       const updated = finalizeGeo(geo)
       expect(updated.bbox).to.deep.equal([-5, -10, 5, 10])

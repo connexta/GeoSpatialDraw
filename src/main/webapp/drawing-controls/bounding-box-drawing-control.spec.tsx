@@ -29,15 +29,18 @@ describe('BoundingBoxDrawingControl', () => {
   describe('constructor', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = (geoJSON) => {}
+      const receiver = () => {}
+      // @ts-ignore
       const control = new BoundingBoxDrawingControl(context, receiver)
     })
   })
   describe('setGeo', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = (geoJSON) => {}
+      const receiver = () => {}
+      // @ts-ignore
       const control = new BoundingBoxDrawingControl(context, receiver)
+      // @ts-ignore
       control.setGeo(makePolygonJSON())
       const expected = makePolygonJSON()
       expect(
@@ -54,7 +57,8 @@ describe('BoundingBoxDrawingControl', () => {
   describe('startDrawing', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = (geoJSON) => {}
+      const receiver = () => {}
+      // @ts-ignore
       const control = new BoundingBoxDrawingControl(context, receiver)
       control.startDrawing()
       expect(context.getMethodCalls().addInteractions.length).to.equal(0)
@@ -71,7 +75,8 @@ describe('BoundingBoxDrawingControl', () => {
   describe('cancelDrawing', () => {
     it('default', () => {
       const context = new MockDrawingContext()
-      const receiver = (geoJSON) => {}
+      const receiver = () => {}
+      // @ts-ignore
       const control = new BoundingBoxDrawingControl(context, receiver)
       control.cancelDrawing()
       expect(context.getMethodCalls().removeListeners.length).to.equal(1)
@@ -107,11 +112,14 @@ describe('BoundingBoxDrawingControl', () => {
     it('default', () => {
       const context = new MockDrawingContext()
       let updated = null
-      const receiver = (geoJSON) => {
+      const receiver = (geoJSON: any) => {
         updated = geoJSON
       }
+      // @ts-ignore
       const control = new BoundingBoxDrawingControl(context, receiver)
+      // @ts-ignore
       control.extentChanged({
+        // @ts-ignore
         extent: makeExtent(),
       })
       const expected = makeExpectedJSON()
@@ -120,13 +128,16 @@ describe('BoundingBoxDrawingControl', () => {
     it('startDrawing -> extentChanged', () => {
       const context = new MockDrawingContext()
       let updated = null
-      const receiver = (geoJSON) => {
+      const receiver = (geoJSON: any) => {
         updated = geoJSON
       }
+      // @ts-ignore
       const control = new BoundingBoxDrawingControl(context, receiver)
       control.startDrawing()
+      // @ts-ignore
       control.setGeo(makePolygonJSON())
       control.extentChanged({
+        // @ts-ignore
         extent: makeExtent(),
       })
       const expected = makeExpectedJSON()

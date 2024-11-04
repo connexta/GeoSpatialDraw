@@ -1,13 +1,18 @@
 import '../../internal/tests'
-import React from 'react'
+import * as React from 'react'
 import { expect } from 'chai'
 import { shallow } from 'enzyme'
-import { dmsSign } from '../dms-formatting'
 import { DMSValueEditor } from './dms-value-editor'
 
 describe('<DMSValueEditor />', () => {
-  const getWrapper = (degree, minute, second, setValue = () => {}) =>
+  const getWrapper = (
+    degree: any,
+    minute: any,
+    second: any,
+    setValue = () => {}
+  ) =>
     shallow(
+      // @ts-ignore
       <DMSValueEditor
         maxDegrees={90}
         negativeHeadingName="-"
@@ -44,8 +49,9 @@ describe('<DMSValueEditor />', () => {
     })
   })
   describe('setValue', () => {
-    const getValueWrapper = (done, expectedDMS) =>
-      getWrapper(5, 5, 5, (dms) => {
+    const getValueWrapper = (done: any, expectedDMS: any) =>
+      // @ts-ignore
+      getWrapper(5, 5, 5, (dms: any) => {
         expect(dms).to.deep.equal(expectedDMS)
         done()
       })
@@ -55,6 +61,7 @@ describe('<DMSValueEditor />', () => {
         minute: 5,
         second: 5,
       })
+      // @ts-ignore
       wrapper.find('SmallInput').at(0).prop('onChange')(11)
     })
     it('minute', (done) => {
@@ -63,6 +70,7 @@ describe('<DMSValueEditor />', () => {
         minute: 45,
         second: 5,
       })
+      // @ts-ignore
       wrapper.find('SmallInput').at(1).prop('onChange')(45)
     })
     it('second', (done) => {
@@ -71,6 +79,7 @@ describe('<DMSValueEditor />', () => {
         minute: 5,
         second: 78,
       })
+      // @ts-ignore
       wrapper.find('WideInput').prop('onChange')(78)
     })
     it('positive', (done) => {
@@ -79,6 +88,7 @@ describe('<DMSValueEditor />', () => {
         minute: 5,
         second: 5,
       })
+      // @ts-ignore
       wrapper.find('HeadingButton').at(1).prop('onClick')()
     })
     it('negative', (done) => {
@@ -87,6 +97,7 @@ describe('<DMSValueEditor />', () => {
         minute: -5,
         second: -5,
       })
+      // @ts-ignore
       wrapper.find('HeadingButton').at(0).prop('onClick')()
     })
   })

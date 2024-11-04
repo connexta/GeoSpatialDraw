@@ -1,8 +1,8 @@
 import * as ol from 'openlayers'
 
 class MockDrawingContext {
-  methodCalls = {}
-  source = null
+  methodCalls: any = {}
+  source: any = null
 
   constructor() {
     this.source = new ol.source.Vector()
@@ -23,11 +23,14 @@ class MockDrawingContext {
     ]
     methodList.forEach((functionName) => {
       this.methodCalls[functionName] = []
+      // @ts-ignore
       this[functionName] = function () {
         this.methodCalls[functionName].push(arguments)
       }
     })
+    // @ts-ignore
     const callCounter = this.getStyle.bind(this)
+    // @ts-ignore
     this.getStyle = () => {
       callCounter()
       return []

@@ -16,19 +16,6 @@
     "module": "CommonJS",
     "outDir": "target/webapp"
   },
-  "typedocOptions": {
-    "mode": "modules",
-    "out": "./target/storybook/docs",
-    "categorizeByGroup": true
-  },
   "include": ["src/main/webapp/**/*.tsx"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "src/setupTests.ts"
-  ]
+  "exclude": ["node_modules", "target"]
 }

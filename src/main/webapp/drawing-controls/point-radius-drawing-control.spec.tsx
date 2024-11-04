@@ -1,51 +1,55 @@
 import * as ol from 'openlayers'
+import * as turf from '@turf/turf'
 import { expect } from 'chai'
+import PointRadiusDrawingControl from './point-radius-drawing-control'
 import MockDrawingContext from './test/mock-drawing-context'
-import LineDrawingControl from './line-drawing-control'
-
-describe('LineDrawingControl', () => {
+describe('PointRadiusDrawingControl', () => {
+  const makeCoordinates = () => [
+    [50, 50],
+    // @ts-ignore
+    turf.rhumbDestination([50, 50], 70, 90, {
+      units: 'meters',
+    }).geometry.coordinates,
+  ]
   const makeFeature = () =>
     new ol.Feature({
-      geometry: new ol.geom.LineString([
-        [50, 50],
-        [10, 10],
-        [20, 20],
-      ]),
+      // @ts-ignore
+      geometry: new ol.geom.LineString(makeCoordinates()),
       color: '#996600',
-      shape: 'Line',
-      id: '',
-      buffer: 0,
+      shape: 'Point Radius',
+      buffer: 70,
       bufferUnit: 'meters',
+      id: '',
     })
   const makeGeoJSON = () => ({
     type: 'Feature',
     properties: {
       color: '#996600',
-      shape: 'Line',
-      id: '',
-      buffer: 0,
+      shape: 'Point Radius',
+      buffer: 70,
       bufferUnit: 'meters',
+      id: '',
     },
     geometry: {
-      type: 'LineString',
-      coordinates: [
-        [50, 50],
-        [10, 10],
-        [20, 20],
-      ],
+      type: 'Point',
+      coordinates: [50, 50],
     },
-    bbox: [10, 10, 50, 50],
+    bbox: [50, 50, 50, 50],
   })
-  let context = null
-  let recievedGeo = null
-  const receiver = (geoJSON) => {
+  let context: MockDrawingContext = new MockDrawingContext()
+  let recievedGeo: any = null
+  const receiver = (geoJSON: any) => {
     recievedGeo = geoJSON
+    recievedGeo.properties.buffer = Math.round(recievedGeo.properties.buffer)
   }
-  let control = null
+  let control: PointRadiusDrawingControl = new PointRadiusDrawingControl(
+    context as any,
+    receiver
+  )
   beforeEach(() => {
     recievedGeo = null
     context = new MockDrawingContext()
-    control = new LineDrawingControl(context, receiver)
+    control = new PointRadiusDrawingControl(context as any, receiver)
   })
   describe('constructor', () => {
     it('default', () => {
@@ -55,44 +59,42 @@ describe('LineDrawingControl', () => {
   })
   describe('onCompleteDrawing', () => {
     it('default', () => {
+      // @ts-ignore
+      control.setGeo(makeGeoJSON())
       control.onCompleteDrawing({
         feature: makeFeature(),
       })
       const expected = makeGeoJSON()
       expect(recievedGeo).to.deep.equal(expected)
-      expect(context.getMethodCalls().updateFeature.length).to.equal(1)
+      expect(context.getMethodCalls().updateFeature.length).to.not.equal(0)
     })
     it('startDrawing -> onCompleteDrawing', () => {
-      const startGeo = makeGeoJSON()
-      startGeo.geometry.coordinates = [
-        [88, 5],
-        [22, 15],
-        [64, 20],
-        [88, 5],
-      ]
-      control.startDrawing(startGeo)
+      control.startDrawing()
+      // @ts-ignore
+      control.setGeo(makeGeoJSON())
       control.onCompleteDrawing({
         feature: makeFeature(),
       })
       const expected = makeGeoJSON()
-      expected.properties.color = '#996600'
       expect(recievedGeo).to.deep.equal(expected)
     })
   })
   describe('onCompleteModify', () => {
     it('default', () => {
+      // @ts-ignore
+      control.setGeo(makeGeoJSON())
       control.onCompleteModify({
         features: {
           getArray: () => [makeFeature()],
         },
       })
       const expected = makeGeoJSON()
-      expected.properties.id = ''
       expect(recievedGeo).to.deep.equal(expected)
     })
   })
   describe('setGeo', () => {
     it('default', () => {
+      // @ts-ignore
       control.setGeo(makeGeoJSON())
       expect(context.getMethodCalls().updateFeature.length).to.equal(1)
       expect(context.getMethodCalls().removeFeature.length).to.equal(0)

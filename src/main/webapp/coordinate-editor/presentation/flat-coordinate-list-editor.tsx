@@ -86,7 +86,7 @@ const Button = styled.div<{ onClick: () => void; title: string }>`
     opacity: 1;
   }
 `
-const CoordinateButton = styled(ToggleButton)`
+const CoordinateButton = styled(ToggleButton as any)`
   width: 100%;
   font-size: ${(props) => props.theme.minimumFontSize};
 `

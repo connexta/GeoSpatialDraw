@@ -35,10 +35,10 @@ const Root = styled.div`
   flex-direction: column;
   min-width: 25rem;
 `
-const PointRoot = styled(Root)`
+const PointRoot = styled(Root as any)`
   min-height: 8rem;
 `
-const CircleRoot = styled(Root)`
+const CircleRoot = styled(Root as any)`
   min-height: 10rem;
 `
 const InputGroup = styled.label`

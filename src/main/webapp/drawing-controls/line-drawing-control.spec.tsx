@@ -1,14 +1,18 @@
 import * as ol from 'openlayers'
 import { expect } from 'chai'
 import MockDrawingContext from './test/mock-drawing-context'
-import PointDrawingControl from './point-drawing-control'
+import LineDrawingControl from './line-drawing-control'
 
-describe('PointDrawingControl', () => {
+describe('LineDrawingControl', () => {
   const makeFeature = () =>
     new ol.Feature({
-      geometry: new ol.geom.Point([50, 50]),
+      geometry: new ol.geom.LineString([
+        [50, 50],
+        [10, 10],
+        [20, 20],
+      ]),
       color: '#996600',
-      shape: 'Point',
+      shape: 'Line',
       id: '',
       buffer: 0,
       bufferUnit: 'meters',
@@ -17,27 +21,34 @@ describe('PointDrawingControl', () => {
     type: 'Feature',
     properties: {
       color: '#996600',
-      shape: 'Point',
+      shape: 'Line',
       id: '',
       buffer: 0,
       bufferUnit: 'meters',
     },
     geometry: {
-      type: 'Point',
-      coordinates: [50, 50],
+      type: 'LineString',
+      coordinates: [
+        [50, 50],
+        [10, 10],
+        [20, 20],
+      ],
     },
-    bbox: [50, 50, 50, 50],
+    bbox: [10, 10, 50, 50],
   })
-  let context = null
-  let recievedGeo = null
-  const receiver = (geoJSON) => {
+  let context: MockDrawingContext = new MockDrawingContext()
+  let recievedGeo: any = null
+  const receiver = (geoJSON: any) => {
     recievedGeo = geoJSON
   }
-  let control = null
+  let control: LineDrawingControl = new LineDrawingControl(
+    context as any,
+    receiver
+  )
   beforeEach(() => {
     recievedGeo = null
     context = new MockDrawingContext()
-    control = new PointDrawingControl(context, receiver)
+    control = new LineDrawingControl(context as any, receiver)
   })
   describe('constructor', () => {
     it('default', () => {
@@ -55,12 +66,20 @@ describe('PointDrawingControl', () => {
       expect(context.getMethodCalls().updateFeature.length).to.equal(1)
     })
     it('startDrawing -> onCompleteDrawing', () => {
-      control.startDrawing()
-      control.setGeo(makeGeoJSON())
+      const startGeo = makeGeoJSON()
+      startGeo.geometry.coordinates = [
+        [88, 5],
+        [22, 15],
+        [64, 20],
+        [88, 5],
+      ]
+      // @ts-ignore
+      control.startDrawing(startGeo)
       control.onCompleteDrawing({
         feature: makeFeature(),
       })
       const expected = makeGeoJSON()
+      expected.properties.color = '#996600'
       expect(recievedGeo).to.deep.equal(expected)
     })
   })
@@ -72,11 +91,13 @@ describe('PointDrawingControl', () => {
         },
       })
       const expected = makeGeoJSON()
+      expected.properties.id = ''
       expect(recievedGeo).to.deep.equal(expected)
     })
   })
   describe('setGeo', () => {
     it('default', () => {
+      // @ts-ignore
       control.setGeo(makeGeoJSON())
       expect(context.getMethodCalls().updateFeature.length).to.equal(1)
       expect(context.getMethodCalls().removeFeature.length).to.equal(0)

@@ -1,23 +1,25 @@
 import { expect } from 'chai'
 import Renderer from './renderer'
 
-define('-Renderer', () => {
+describe('-Renderer', () => {
   class MockMap {
     layer = null
-    addLayer(layer) {
+    addLayer(layer: any) {
       this.layer = layer
     }
   }
-  define('constructor', () => {
+  describe('constructor', () => {
     it('Adds vector layer', () => {
       const map = new MockMap()
+      // @ts-expect-error
       const renderer = new Renderer(map)
       expect(map.layer).to.not.equal(null)
     })
   })
-  define('renderList', () => {
+  describe('renderList', () => {
     it('Adds list of geos to layer', () => {
       const map = new MockMap()
+      // @ts-expect-error
       const renderer = new Renderer(map)
       renderer.renderList([
         {
@@ -26,6 +28,7 @@ define('-Renderer', () => {
             type: 'Point',
             coordinates: [125.6, 10.1],
           },
+          // @ts-expect-error
           properties: {
             name: 'Dinagat Islands',
             color: '#996600',
@@ -33,6 +36,7 @@ define('-Renderer', () => {
         },
         {
           type: 'Feature',
+          // @ts-expect-error
           properties: {
             color: 'white',
           },
@@ -50,12 +54,14 @@ define('-Renderer', () => {
           },
         },
       ])
+      // @ts-expect-error
       expect(map.layer.getSource().getFeatures().length).to.equal(2)
     })
   })
-  define('addGeo', () => {
+  describe('addGeo', () => {
     it('Adds geo to layer', () => {
       const map = new MockMap()
+      // @ts-expect-error
       const renderer = new Renderer(map)
       renderer.addGeo({
         type: 'Feature',
@@ -63,17 +69,20 @@ define('-Renderer', () => {
           type: 'Point',
           coordinates: [125.6, 10.1],
         },
+        // @ts-expect-error
         properties: {
           name: 'Dinagat Islands',
           color: '#996600',
         },
       })
+      // @ts-expect-error
       expect(map.layer.getSource().getFeatures().length).to.equal(1)
     })
   })
-  define('clearGeos', () => {
+  describe('clearGeos', () => {
     it('Removes all geos', () => {
       const map = new MockMap()
+      // @ts-expect-error
       const renderer = new Renderer(map)
       renderer.renderList([
         {
@@ -82,6 +91,7 @@ define('-Renderer', () => {
             type: 'Point',
             coordinates: [125.6, 10.1],
           },
+          // @ts-expect-error
           properties: {
             name: 'Dinagat Islands',
             color: '#996600',
@@ -89,6 +99,7 @@ define('-Renderer', () => {
         },
         {
           type: 'Feature',
+          // @ts-expect-error
           properties: {
             color: 'white',
           },
@@ -106,16 +117,20 @@ define('-Renderer', () => {
           },
         },
       ])
+      // @ts-expect-error
       expect(map.layer.getSource().getFeatures().length).to.equal(2)
       renderer.clearGeos()
+      // @ts-expect-error
       expect(map.layer.getSource().getFeatures().length).to.equal(0)
     })
   })
-  define('getExtent', () => {
+  describe('getExtent', () => {
     it('adjusts for antimeridian crossing', () => {
       const map = new MockMap()
+      // @ts-expect-error
       const renderer = new Renderer(map)
       const bbox = [-170, 0, 170, 10]
+      // @ts-expect-error
       const extent = renderer.getExtent({ bbox })
       expect(extent).to.deep.equal([170, 0, 190, 10])
     })
