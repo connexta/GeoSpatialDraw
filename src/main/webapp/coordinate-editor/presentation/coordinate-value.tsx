@@ -31,7 +31,7 @@ const Cell = styled.div`
   margin-right: ${(props) => props.theme.minimumSpacing};
 `
 
-const CoordinateValue: React.SFC<Props> = ({ lat, lon, unit }) => {
+const CoordinateValue: React.FC<Props> = ({ lat, lon, unit }) => {
   let cells: React.ReactNode
   switch (unit) {
     case Units.LAT_LON:

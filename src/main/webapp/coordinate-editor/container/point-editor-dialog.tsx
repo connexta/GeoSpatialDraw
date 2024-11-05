@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as turf from '@turf/turf'
 import { METERS, GeometryJSON } from '../../geometry'
 import { geoEditorToDialog, FinalizeGeo } from './geo-editor-to-dialog'
 import { FixedHeightPointEditor } from '../presentation/point-circle-editor'
@@ -20,8 +19,8 @@ type Props = {
 class PointGeoEditor extends React.Component<Props> {
   render() {
     const { geo, coordinateUnit, onUpdateGeo } = this.props
-    const lon = (geo.geometry as turf.Point).coordinates[0]
-    const lat = (geo.geometry as turf.Point).coordinates[1]
+    const lon = (geo.geometry as GeoJSON.Point).coordinates[0]
+    const lat = (geo.geometry as GeoJSON.Point).coordinates[1]
     return (
       <FixedHeightPointEditor
         coordinateUnit={coordinateUnit}
@@ -40,6 +39,5 @@ const PointEditorDialog = geoEditorToDialog(
   'Point',
   finalizeGeo
 )
-PointEditorDialog.displayName = 'PointEditorDialog'
 
 export { PointGeoEditor, PointEditorDialog }

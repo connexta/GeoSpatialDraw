@@ -1,5 +1,5 @@
 import * as ol from 'openlayers'
-import * as turf from '@turf/turf'
+import { bboxPolygon } from '@turf/turf'
 import { GeometryJSON } from '../geometry'
 import Shape from './shape'
 
@@ -79,9 +79,8 @@ class ShapeDetector {
         feature.getGeometry() as ol.geom.Polygon
       ).getCoordinates()[0]
       const extent = feature.getGeometry().getExtent()
-      const expectedCoordinates = (
-        turf.bboxPolygon(extent).geometry as turf.Polygon
-      ).coordinates[0] as [number, number][]
+      const expectedCoordinates = bboxPolygon(extent).geometry
+        .coordinates[0] as [number, number][]
       return (
         coordinates.length === 5 &&
         expectedCoordinates.every((expectedPoint) =>

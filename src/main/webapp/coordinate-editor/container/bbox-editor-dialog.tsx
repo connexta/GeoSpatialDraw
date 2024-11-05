@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as turf from '@turf/turf'
 import BBoxEditor from './bbox-editor'
 import { extentToBBox } from '../bbox-editor-props'
 import { GeometryJSON, Extent } from '../../geometry'
@@ -35,7 +34,7 @@ const updateGeoWithExtentBBox = (
     geometry: {
       ...geo.geometry,
       coordinates,
-    } as turf.Polygon,
+    } as GeoJSON.Polygon,
   }
 }
 
@@ -74,6 +73,5 @@ const BBoxEditorDialog = geoEditorToDialog(
   'Bounding Box',
   finalizeGeo
 )
-BBoxEditorDialog.displayName = 'BBoxEditorDialog'
 
 export { BBoxGeoEditor, BBoxEditorDialog, updateGeoWithExtentBBox, finalizeGeo }

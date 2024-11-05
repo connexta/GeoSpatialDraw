@@ -7,7 +7,11 @@ const Root = Common.Column
 const TextGroup = Common.SpacedInputLabelRow
 const Label = Common.Label
 
-const LatLonPointEditor: React.SFC<Props> = ({ lat, lon, setCoordinate }) => (
+const LatLonPointEditor: React.FC<Props> = ({
+  lat,
+  lon,
+  setCoordinate,
+}: Props) => (
   <Root>
     <TextGroup>
       <Label>Latitude</Label>

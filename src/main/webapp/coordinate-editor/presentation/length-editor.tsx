@@ -39,7 +39,7 @@ const renderLengthUnitOption = (unit: LengthUnit) => (
   </option>
 )
 
-const LengthEditor: React.SFC<Props> = ({
+const LengthEditor: React.FC<Props> = ({
   length,
   unit,
   setLength,

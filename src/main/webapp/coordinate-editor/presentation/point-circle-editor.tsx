@@ -49,7 +49,7 @@ const InputGroup = styled.label`
 `
 const Label = Common.Label
 
-const FixedHeightPointEditor: React.SFC<PointProps> = ({
+const FixedHeightPointEditor: React.FC<PointProps> = ({
   coordinateUnit,
   lat,
   lon,
@@ -64,7 +64,7 @@ const FixedHeightPointEditor: React.SFC<PointProps> = ({
     />
   </PointRoot>
 )
-const CircleEditor: React.SFC<CircleProps> = ({
+const CircleEditor: React.FC<CircleProps> = ({
   radius,
   radiusUnit,
   coordinateUnit,

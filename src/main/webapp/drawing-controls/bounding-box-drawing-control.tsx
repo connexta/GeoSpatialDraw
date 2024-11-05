@@ -110,7 +110,7 @@ class BoundingBoxDrawingControl extends BasicDrawingControl {
         ...this.properties,
         shape: this.getShape(),
       },
-      geometry: bboxPolygon.geometry as turf.Polygon,
+      geometry: bboxPolygon.geometry as GeoJSON.Polygon,
     }
   }
 }

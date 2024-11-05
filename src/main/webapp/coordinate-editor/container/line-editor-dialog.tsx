@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as turf from '@turf/turf'
 import { GeometryJSON } from '../../geometry'
 import { geoEditorToDialog, FinalizeGeo } from './geo-editor-to-dialog'
 import {
@@ -19,11 +18,11 @@ type Props = {
   onUpdateGeo: (geo: GeometryJSON) => void
 }
 
-const LineGeoEditor: React.SFC<Props> = (props) => (
+const LineGeoEditor: React.FC<Props> = (props) => (
   <FlatCoordinateListGeoEditor
     {...props}
     getCoordinatesFromGeo={(geo) => {
-      const coordinates = (geo.geometry as turf.LineString)
+      const coordinates = (geo.geometry as GeoJSON.LineString)
         .coordinates as Coordinates
       return coordinates.length < 1 ? [[0, 0]] : coordinates
     }}
@@ -32,13 +31,12 @@ const LineGeoEditor: React.SFC<Props> = (props) => (
       if (coordinates.length < 1) {
         coordinates = [[0, 0]]
       }
-      const lineGeo = geo.geometry as turf.LineString
+      const lineGeo = geo.geometry as GeoJSON.LineString
       lineGeo.coordinates = coordinates
       return updated
     }}
   />
 )
 const LineEditorDialog = geoEditorToDialog(LineGeoEditor, 'Line', finalizeGeo)
-LineEditorDialog.displayName = 'LineEditorDialog'
 
 export { LineGeoEditor, LineEditorDialog }

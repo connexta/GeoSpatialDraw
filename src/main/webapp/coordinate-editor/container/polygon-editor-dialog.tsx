@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as turf from '@turf/turf'
 import { GeometryJSON } from '../../geometry'
 import { geoEditorToDialog, FinalizeGeo } from './geo-editor-to-dialog'
 import {
@@ -20,11 +19,11 @@ type Props = {
   onUpdateGeo: (geo: GeometryJSON) => void
 }
 
-const PolygonGeoEditor: React.SFC<Props> = (props) => (
+const PolygonGeoEditor: React.FC<Props> = (props) => (
   <FlatCoordinateListGeoEditor
     {...props}
     getCoordinatesFromGeo={(geo) => {
-      const coordinates = (geo.geometry as turf.Polygon)
+      const coordinates = (geo.geometry as GeoJSON.Polygon)
         .coordinates[0] as Coordinates
       return coordinates.length < MIN_POLYGON_COORDINATE_LENGTH
         ? [[0, 0]]
@@ -36,7 +35,7 @@ const PolygonGeoEditor: React.SFC<Props> = (props) => (
         coordinates = [[0, 0]]
       }
       coordinates.push(coordinates[0])
-      const polyGeo = geo.geometry as turf.Polygon
+      const polyGeo = geo.geometry as GeoJSON.Polygon
       polyGeo.coordinates = [coordinates]
       return updated
     }}
@@ -48,6 +47,5 @@ const PolygonEditorDialog = geoEditorToDialog(
   'Polygon',
   finalizeGeo
 )
-PolygonEditorDialog.displayName = 'PolygonEditorDialog'
 
 export { PolygonGeoEditor, PolygonEditorDialog }

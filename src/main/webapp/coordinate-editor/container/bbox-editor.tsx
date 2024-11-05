@@ -37,7 +37,7 @@ const editorMap = (unit: Units.CoordinateUnit): Editor => {
   }
 }
 
-const BBoxEditor: React.SFC<Props> = ({ setExtent, extent, unit }) => {
+const BBoxEditor: React.FC<Props> = ({ setExtent, extent, unit }) => {
   const { north, south, east, west } = extentToBBox(extent)
   const EditorTag = editorMap(unit)
   return (

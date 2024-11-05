@@ -13,7 +13,7 @@ const TextGroup = styled.label`
 `
 const Label = Common.CompactLabel
 
-const LatLonDMSBBoxEditor: React.SFC<Props> = ({ setBBox, ...rest }) => {
+const LatLonDMSBBoxEditor: React.FC<Props> = ({ setBBox, ...rest }) => {
   const bbox: BBox = rest
   const north = decimalToDMS(bbox.north)
   const south = decimalToDMS(bbox.south)

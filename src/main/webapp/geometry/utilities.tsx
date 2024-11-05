@@ -1,5 +1,4 @@
 import * as turf from '@turf/turf'
-import { Position, Polygon, LineString } from '@turf/turf'
 import buffer from '@turf/buffer'
 import * as _ from 'lodash'
 import { Shape } from '../shape-utils'
@@ -113,7 +112,7 @@ const makeBufferedGeo = (geo: GeometryJSON): GeometryJSON => {
     let bufferedGeo
     if (geo.geometry.type === 'Point') {
       if (radius > 0) {
-        const point = geo.geometry as turf.Point
+        const point = geo.geometry as GeoJSON.Point
         bufferedGeo = turf.circle(point.coordinates, radius, {
           units: 'meters',
         })
@@ -149,7 +148,7 @@ const makeBufferedGeo = (geo: GeometryJSON): GeometryJSON => {
  *
  * @returns Extent
  */
-const bboxToExtent = (bbox: turf.BBox): Extent => [
+const bboxToExtent = (bbox: GeoJSON.BBox): Extent => [
   bbox[0],
   bbox[1],
   bbox[2],
@@ -164,10 +163,10 @@ const bboxToExtent = (bbox: turf.BBox): Extent => [
  * @returns Extent
  */
 const geoToExtent = (geo: GeometryJSON): Extent => {
-  return bboxToExtent(turf.bbox(geo))
+  return bboxToExtent(turf.bbox(geo.geometry))
 }
 
-const convertCoordsToDisplay = (coordinates: Position[]) => {
+const convertCoordsToDisplay = (coordinates: GeoJSON.Position[]) => {
   const coords = _.cloneDeep(coordinates)
   coords.forEach((coord) => {
     if (coord[0] < 0) {
@@ -191,10 +190,10 @@ const adjustGeoCoordsForAntimeridian = (geo: GeometryJSON) => {
   const crossesAntimeridian = width > 180
   if (crossesAntimeridian) {
     if (geometry.type === 'LineString') {
-      const lineStringCoords = (geometry as LineString).coordinates
+      const lineStringCoords = (geometry as GeoJSON.LineString).coordinates
       geometry.coordinates = convertCoordsToDisplay(lineStringCoords)
     } else if (geometry.type === 'Polygon') {
-      const coords = (geometry as Polygon).coordinates[0]
+      const coords = (geometry as GeoJSON.Polygon).coordinates[0]
       geometry.coordinates[0] = convertCoordsToDisplay(coords)
     }
   }

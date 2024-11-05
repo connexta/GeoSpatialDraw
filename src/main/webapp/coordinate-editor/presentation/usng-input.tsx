@@ -19,6 +19,7 @@ type FormEvent = React.FormEvent<HTMLInputElement>
 const TextInput = styled.input<{ type: 'text' }>`
   width: 12em;
 `
+// @ts-ignore
 TextInput.displayName = 'TextInput'
 
 class USNGInput extends React.Component<Props, State> {

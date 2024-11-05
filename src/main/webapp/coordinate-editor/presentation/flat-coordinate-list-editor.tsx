@@ -91,7 +91,7 @@ const CoordinateButton = styled(ToggleButton as any)`
   font-size: ${(props) => props.theme.minimumFontSize};
 `
 
-const FlatCoordinateListEditor: React.SFC<Props> = ({
+const FlatCoordinateListEditor: React.FC<Props> = ({
   buffer,
   bufferUnit,
   coordinateList,

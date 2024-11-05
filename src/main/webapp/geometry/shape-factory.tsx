@@ -46,7 +46,7 @@ const makePointGeo = (id: string, lat: number, lon: number): GeometryJSON =>
     {
       type: 'Point',
       coordinates: [lon, lat],
-    } as turf.Point,
+    } as GeoJSON.Point,
     'Point'
   )
 
@@ -73,7 +73,7 @@ const makePointRadiusGeo = (
     {
       type: 'Point',
       coordinates: [lon, lat],
-    } as turf.Point,
+    } as GeoJSON.Point,
     'Point Radius',
     radius,
     radiusUnit
@@ -100,7 +100,7 @@ const makePolygonGeo = (
     {
       type: 'Polygon',
       coordinates: [[...lonLatCoordinateList, lonLatCoordinateList[0]]],
-    } as turf.Polygon,
+    } as GeoJSON.Polygon,
     'Polygon',
     buffer,
     bufferUnit
@@ -127,7 +127,7 @@ const makeLineGeo = (
     {
       type: 'LineString',
       coordinates: lonLatCoordinateList,
-    } as turf.LineString,
+    } as GeoJSON.LineString,
     'Line',
     buffer,
     bufferUnit
@@ -146,7 +146,7 @@ const makeBBoxGeo = (id: string, extent: Extent): GeometryJSON =>
     id,
     {
       ...turf.bboxPolygon(extent).geometry,
-    } as turf.Polygon,
+    } as GeoJSON.Polygon,
     'Bounding Box'
   )
 

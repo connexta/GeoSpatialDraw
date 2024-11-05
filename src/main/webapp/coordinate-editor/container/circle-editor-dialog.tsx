@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as turf from '@turf/turf'
 import { LengthUnit, GeometryJSON } from '../../geometry'
 import { geoEditorToDialog, FinalizeGeo } from './geo-editor-to-dialog'
 import { CircleEditor } from '../presentation/point-circle-editor'
@@ -20,8 +19,8 @@ type Props = {
 class CircleGeoEditor extends React.Component<Props> {
   render() {
     const { geo, coordinateUnit, onUpdateGeo } = this.props
-    const lon = (geo.geometry as turf.Point).coordinates[0]
-    const lat = (geo.geometry as turf.Point).coordinates[1]
+    const lon = (geo.geometry as GeoJSON.Point).coordinates[0]
+    const lat = (geo.geometry as GeoJSON.Point).coordinates[1]
     const radius = geo.properties.buffer || 0
     const radiusUnit = geo.properties.bufferUnit
     return (
@@ -52,6 +51,5 @@ const CircleEditorDialog = geoEditorToDialog(
   'Point Radius',
   finalizeGeo
 )
-CircleEditorDialog.displayName = 'CircleEditorDialog'
 
 export { CircleEditorDialog, CircleGeoEditor }

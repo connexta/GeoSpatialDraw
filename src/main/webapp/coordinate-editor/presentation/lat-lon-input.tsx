@@ -13,7 +13,7 @@ type Props = HTMLAttributes & {
 const DegreeInput = styled(NumberInput)`
   width: 8rem;
 `
-const LatitudeInput: React.SFC<Props> = (props) => (
+const LatitudeInput: React.FC<Props> = (props) => (
   <DegreeInput
     maxValue={90}
     minValue={-90}
@@ -21,7 +21,7 @@ const LatitudeInput: React.SFC<Props> = (props) => (
     {...props}
   />
 )
-const LongitudeInput: React.SFC<Props> = (props) => (
+const LongitudeInput: React.FC<Props> = (props) => (
   <DegreeInput
     maxValue={180}
     minValue={-180}

@@ -21,7 +21,7 @@ const updateCircleGeo = (
     geometry: {
       ...geo.geometry,
       coordinates: center,
-    } as turf.Point,
+    } as GeoJSON.Point,
     bbox,
     properties: {
       ...geo.properties,

@@ -8,11 +8,7 @@ const Root = Common.Column
 const TextGroup = Common.SpacedInputLabelRow
 const Label = Common.Label
 
-const LatLonDMSPointEditor: React.SFC<Props> = ({
-  lat,
-  lon,
-  setCoordinate,
-}) => {
+const LatLonDMSPointEditor: React.FC<Props> = ({ lat, lon, setCoordinate }) => {
   const dmsLat = decimalToDMS(lat)
   const dmsLon = decimalToDMS(lon)
   return (

@@ -148,7 +148,7 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     const destination = turf.rhumbDestination(point, meters, bearing, {
       units: 'meters',
     })
-    const end = (destination.geometry as turf.Point).coordinates as [
+    const end = (destination.geometry as GeoJSON.Point).coordinates as [
       number,
       number
     ]

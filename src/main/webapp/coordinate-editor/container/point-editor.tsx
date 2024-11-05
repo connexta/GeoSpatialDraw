@@ -34,10 +34,9 @@ const editorMap = (unit: Units.CoordinateUnit): Editor => {
   }
 }
 
-const PointEditor: React.SFC<Props> = ({ lat, lon, setCoordinate, unit }) => {
+const PointEditor: React.FC<Props> = ({ lat, lon, setCoordinate, unit }) => {
   const EditorTag = editorMap(unit)
   return <EditorTag lat={lat} lon={lon} setCoordinate={setCoordinate} />
 }
-PointEditor.displayName = 'PointEditor'
 
 export default PointEditor

@@ -16,7 +16,7 @@ type Props = {
   shape: Shape
 }
 
-const AllShapesEditorDialog: React.SFC<Props> = ({ shape, geo, onOk }) => {
+const AllShapesEditorDialog: React.FC<Props> = ({ shape, geo, onOk }) => {
   switch (shape) {
     case 'Polygon':
       return <PolygonEditorDialog geo={geo} onOk={onOk} />

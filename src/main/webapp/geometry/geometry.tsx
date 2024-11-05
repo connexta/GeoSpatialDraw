@@ -1,4 +1,3 @@
-import * as turf from '@turf/turf'
 import { Shape } from '../shape-utils'
 import { LengthUnit, METERS } from './units'
 
@@ -45,24 +44,24 @@ const DEFAULT_PROPERTIES: GeometryJSONProperties = {
 /**
  * GeoJSON Geometries supported by GeometryJSON
  */
-type Geometry = turf.Polygon | turf.Point | turf.LineString
+type Geometry = GeoJSON.Polygon | GeoJSON.Point | GeoJSON.LineString
 
 /**
  * Extended GeoJSON used to represent map geometry.
  * For details on GeoJSON see: https://geojson.org/
  */
-type GeometryJSON = turf.Feature & {
+type GeometryJSON = GeoJSON.Feature & {
   bbox: Extent
   properties: GeometryJSONProperties
   geometry: Geometry
 }
 
-const DEFAULT_POLYGON: turf.Polygon = {
+const DEFAULT_POLYGON: GeoJSON.Polygon = {
   type: 'Polygon',
   coordinates: [[[0, 0]]],
 }
 
-const DEFAULT_POINT: turf.Point = {
+const DEFAULT_POINT: GeoJSON.Point = {
   type: 'Point',
   coordinates: [0, 0],
 }

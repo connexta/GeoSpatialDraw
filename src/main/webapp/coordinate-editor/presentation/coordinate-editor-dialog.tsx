@@ -96,7 +96,7 @@ const Button = styled.div<{ isSubmit: boolean; onClick: () => void }>`
   }
 `
 
-const CoordinateEditorDialog: React.SFC<Props> = ({
+const CoordinateEditorDialog: React.FC<Props> = ({
   onOk,
   setUnit,
   children,

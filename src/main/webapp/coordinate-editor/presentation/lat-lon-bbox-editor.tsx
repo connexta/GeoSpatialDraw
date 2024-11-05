@@ -12,7 +12,7 @@ const TextGroup = styled.label`
 `
 const Label = Common.CompactLabel
 
-const LatLonBBoxEditor: React.SFC<Props> = ({
+const LatLonBBoxEditor: React.FC<Props> = ({
   north,
   south,
   east,
