@@ -1,4 +1,7 @@
-import * as ol from 'openlayers'
+import { Feature } from 'ol'
+import { Polygon } from 'ol/geom'
+import { Type } from 'ol/geom/Geometry'
+
 import DrawingContext from './drawing-context'
 import UpdatedGeoReceiver from './geo-receiver'
 import ModifiableDrawingControl from './modifiable-drawing-control'
@@ -21,13 +24,13 @@ class PolygonDrawingControl extends ModifiableDrawingControl {
     return 'Polygon'
   }
 
-  getGeoType(): ol.geom.GeometryType {
+  getGeoType(): Type {
     return 'Polygon'
   }
 
-  protected makeEmptyFeature(): ol.Feature {
-    return new ol.Feature(
-      new ol.geom.Polygon([
+  protected makeEmptyFeature(): Feature {
+    return new Feature(
+      new Polygon([
         [
           [0, 0],
           [0, 0],

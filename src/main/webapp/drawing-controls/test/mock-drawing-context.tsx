@@ -1,11 +1,10 @@
-import * as ol from 'openlayers'
-
+import { Vector as VectorSource } from 'ol/source'
 class MockDrawingContext {
   methodCalls: any = {}
   source: any = null
 
   constructor() {
-    this.source = new ol.source.Vector()
+    this.source = new VectorSource()
     this.methodCalls = {}
     const methodList = [
       'addInteractions',

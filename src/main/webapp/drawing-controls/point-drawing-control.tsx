@@ -1,4 +1,7 @@
-import * as ol from 'openlayers'
+import { Feature } from 'ol'
+import { Point } from 'ol/geom'
+import { Type } from 'ol/geom/Geometry'
+
 import DrawingContext from './drawing-context'
 import UpdatedGeoReceiver from './geo-receiver'
 import ModifiableDrawingControl from './modifiable-drawing-control'
@@ -21,7 +24,7 @@ class PointDrawingControl extends ModifiableDrawingControl {
     return 'Point'
   }
 
-  getGeoType(): ol.geom.GeometryType {
+  getGeoType(): Type {
     return 'Point'
   }
 
@@ -31,8 +34,8 @@ class PointDrawingControl extends ModifiableDrawingControl {
     super.cancelDrawing()
   }
 
-  protected makeEmptyFeature(): ol.Feature {
-    return new ol.Feature(new ol.geom.Point([0, 0]))
+  protected makeEmptyFeature(): Feature {
+    return new Feature(new Point([0, 0]))
   }
 }
 

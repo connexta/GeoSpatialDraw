@@ -1,5 +1,7 @@
 import * as React from 'react'
-import * as ol from 'openlayers'
+import { StyleFunction } from 'ol/style/Style'
+import { Style } from 'ol/style'
+import { Map as OpenlayersMap } from 'ol'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThList } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
@@ -25,7 +27,7 @@ import { GeometryJSON } from '../geometry'
 
 type Props = HTMLAttributes & {
   shape: Shape | null
-  map: ol.Map
+  map: OpenlayersMap
   isActive: boolean
   showCoordinateEditor?: boolean
   saveAndContinue?: boolean
@@ -39,7 +41,7 @@ type Props = HTMLAttributes & {
   onSetShape: (shape: Shape) => void
   onUpdate: UpdatedGeoReceiver
   disabledShapes?: Shape[]
-  mapStyle: ol.StyleFunction | ol.style.Style | ol.style.Style[]
+  mapStyle: StyleFunction | Style | Style[]
 }
 
 type DrawingControlMap = Map<Shape, DrawingControl>

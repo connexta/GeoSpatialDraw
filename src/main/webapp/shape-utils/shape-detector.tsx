@@ -1,19 +1,21 @@
-import * as ol from 'openlayers'
 import { bboxPolygon } from '@turf/turf'
 import { GeometryJSON } from '../geometry'
 import Shape from './shape'
+import GeoJSON from 'ol/format/GeoJSON'
+import Feature from 'ol/Feature'
+import { Polygon } from 'ol/geom'
 
 /**
  * Detects shapes of GeometryJSON objects by evaluating their geometric contents
  */
 class ShapeDetector {
-  private geoFormat: ol.format.GeoJSON
+  private geoFormat: GeoJSON
 
   /**
    * Constructs an instance of the ShapeDetector
    */
   constructor() {
-    this.geoFormat = new ol.format.GeoJSON()
+    this.geoFormat = new GeoJSON()
   }
 
   /**
@@ -23,7 +25,7 @@ class ShapeDetector {
    */
   shapeFromGeoJSON(geoJSON: GeometryJSON): Shape {
     const feature = this.geoFormat.readFeature(geoJSON)
-    return this.shapeFromFeature(feature)
+    return this.shapeFromFeature(feature as Feature)
   }
 
   /**
@@ -31,7 +33,7 @@ class ShapeDetector {
    * @param feature - Open Layers feature
    * @returns Shape of geometry
    */
-  shapeFromFeature(feature: ol.Feature): Shape {
+  shapeFromFeature(feature: Feature): Shape {
     if (this.isLineFeature(feature)) {
       return 'Line'
     } else if (this.isBoundingBoxFeature(feature)) {
@@ -50,8 +52,8 @@ class ShapeDetector {
    * @param feature - Open Layers feature
    * @returns true if geometry is a line
    */
-  isLineFeature(feature: ol.Feature): boolean {
-    return feature.getGeometry().getType() === 'LineString'
+  isLineFeature(feature: Feature): boolean {
+    return feature.getGeometry()?.getType() === 'LineString'
   }
 
   /**
@@ -59,9 +61,9 @@ class ShapeDetector {
    * @param feature - Open Layers feature
    * @returns true if geometry is a point
    */
-  isPointFeature(feature: ol.Feature): boolean {
+  isPointFeature(feature: Feature): boolean {
     return (
-      feature.getGeometry().getType() === 'Point' &&
+      feature.getGeometry()?.getType() === 'Point' &&
       (feature.get('buffer') === undefined || feature.get('buffer') <= 0)
     )
   }
@@ -71,15 +73,16 @@ class ShapeDetector {
    * @param feature - Open Layers feature
    * @returns true if geometry is a bounding box
    */
-  isBoundingBoxFeature(feature: ol.Feature): boolean {
+  isBoundingBoxFeature(feature: Feature): boolean {
     if (!this.isPolygonFeature(feature)) {
       return false
     } else {
-      const coordinates = (
-        feature.getGeometry() as ol.geom.Polygon
-      ).getCoordinates()[0]
-      const extent = feature.getGeometry().getExtent()
-      const expectedCoordinates = bboxPolygon(extent).geometry
+      const coordinates = (feature.getGeometry() as Polygon).getCoordinates()[0]
+      const extent = feature.getGeometry()?.getExtent()
+      if (!extent) {
+        return false
+      }
+      const expectedCoordinates = bboxPolygon(extent as GeoJSON.BBox).geometry
         .coordinates[0] as [number, number][]
       return (
         coordinates.length === 5 &&
@@ -98,9 +101,11 @@ class ShapeDetector {
    * @param feature - Open Layers feature
    * @returns true if geometry is a point radius
    */
-  isPointRadiusFeature(feature: ol.Feature): boolean {
+  isPointRadiusFeature(feature: Feature): boolean {
     return (
-      feature.getGeometry().getType() === 'Point' && feature.get('buffer') > 0
+      feature.getGeometry()?.getType() === 'Point' &&
+      feature.get('buffer') &&
+      feature.get('buffer') > 0
     )
   }
 
@@ -109,8 +114,8 @@ class ShapeDetector {
    * @param feature - Open Layers feature
    * @returns true if geometry is a polygon
    */
-  isPolygonFeature(feature: ol.Feature): boolean {
-    return feature.getGeometry().getType() === 'Polygon'
+  isPolygonFeature(feature: Feature): boolean {
+    return feature.getGeometry()?.getType() === 'Polygon'
   }
 }
 

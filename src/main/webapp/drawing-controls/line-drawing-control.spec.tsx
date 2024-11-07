@@ -1,12 +1,13 @@
-import * as ol from 'openlayers'
+import { Feature } from 'ol'
+import { LineString } from 'ol/geom'
 import { expect } from 'chai'
 import MockDrawingContext from './test/mock-drawing-context'
 import LineDrawingControl from './line-drawing-control'
 
 describe('LineDrawingControl', () => {
   const makeFeature = () =>
-    new ol.Feature({
-      geometry: new ol.geom.LineString([
+    new Feature({
+      geometry: new LineString([
         [50, 50],
         [10, 10],
         [20, 20],

@@ -1,12 +1,13 @@
-import * as ol from 'openlayers'
 import { expect } from 'chai'
+import { Feature } from 'ol'
+import { Point } from 'ol/geom'
 import MockDrawingContext from './test/mock-drawing-context'
 import PointDrawingControl from './point-drawing-control'
 
 describe('PointDrawingControl', () => {
   const makeFeature = () =>
-    new ol.Feature({
-      geometry: new ol.geom.Point([50, 50]),
+    new Feature({
+      geometry: new Point([50, 50]),
       color: '#996600',
       shape: 'Point',
       id: '',

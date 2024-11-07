@@ -1,4 +1,3 @@
-import * as ol from 'openlayers'
 import DrawingContext from './drawing-context'
 import UpdatedGeoReceiver from './geo-receiver'
 import DrawingControl from './drawing-control'
@@ -10,6 +9,9 @@ import {
   makeEmptyGeometry,
   geoToExtent,
 } from '../geometry'
+import GeoJSON from 'ol/format/GeoJSON'
+import Feature from 'ol/Feature'
+import { Type } from 'ol/geom/Geometry'
 
 type GeoProps = GeometryJSONProperties & {
   [index: string]: any
@@ -18,7 +20,7 @@ type GeoProps = GeometryJSONProperties & {
 abstract class BasicDrawingControl implements DrawingControl {
   protected context: DrawingContext
   protected receiver: UpdatedGeoReceiver
-  protected geoFormat: ol.format.GeoJSON
+  protected geoFormat: GeoJSON
   protected mouseDragActive: boolean
   protected drawingActive: boolean
   protected properties: GeoProps
@@ -30,7 +32,7 @@ abstract class BasicDrawingControl implements DrawingControl {
   protected constructor(context: DrawingContext, receiver: UpdatedGeoReceiver) {
     this.context = context
     this.receiver = receiver
-    this.geoFormat = new ol.format.GeoJSON()
+    this.geoFormat = new GeoJSON()
     this.mouseDragActive = false
     this.drawingActive = false
     this.setProperties(makeEmptyGeometry('', this.getShape()).properties)
@@ -47,7 +49,7 @@ abstract class BasicDrawingControl implements DrawingControl {
     return this.properties
   }
 
-  protected applyPropertiesToFeature(feature: ol.Feature) {
+  protected applyPropertiesToFeature(feature: Feature) {
     if (this.properties.id) {
       feature.setId(this.properties.id)
     }
@@ -60,14 +62,13 @@ abstract class BasicDrawingControl implements DrawingControl {
 
   protected abstract getShape(): Shape
 
-  protected abstract getGeoType(): ol.geom.GeometryType
+  protected abstract getGeoType(): Type
 
-  protected featureToGeo(feature: ol.Feature): GeometryJSON {
-    // @ts-ignore openlayers GeoJSON type incompatibility
+  protected featureToGeo(feature: Feature): GeometryJSON {
     return this.geoFormat.writeFeatureObject(feature) as GeometryJSON
   }
 
-  protected writeExtendedGeoJSON(feature: ol.Feature): GeometryJSON {
+  protected writeExtendedGeoJSON(feature: Feature): GeometryJSON {
     const shape = this.getShape()
     const geo = this.featureToGeo(feature)
     const bufferedGeo = makeBufferedGeo({

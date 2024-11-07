@@ -1,4 +1,7 @@
-import * as ol from 'openlayers'
+import { Feature } from 'ol'
+import { LineString } from 'ol/geom'
+import { Type } from 'ol/geom/Geometry'
+
 import DrawingContext from './drawing-context'
 import UpdatedGeoReceiver from './geo-receiver'
 import ModifiableDrawingControl from './modifiable-drawing-control'
@@ -21,12 +24,12 @@ class LineDrawingControl extends ModifiableDrawingControl {
     return 'Line'
   }
 
-  getGeoType(): ol.geom.GeometryType {
+  getGeoType(): Type {
     return 'LineString'
   }
 
-  protected makeEmptyFeature(): ol.Feature {
-    return new ol.Feature(new ol.geom.LineString([[0, 0]]))
+  protected makeEmptyFeature(): Feature {
+    return new Feature(new LineString([[0, 0]]))
   }
 }
 

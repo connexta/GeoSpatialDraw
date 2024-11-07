@@ -1,4 +1,4 @@
-import * as ol from 'openlayers'
+import Feature from 'ol/Feature'
 import * as turf from '@turf/turf'
 import DrawingContext from './drawing-context'
 import UpdatedGeoReceiver from './geo-receiver'
@@ -9,10 +9,22 @@ import {
   getDistanceInMeters,
   getDistanceFromMeters,
 } from '../internal/distance'
+import LineString from 'ol/geom/LineString'
+import Point from 'ol/geom/Point'
+import {
+  always as alwaysCondition,
+  never as neverCondition,
+} from 'ol/events/condition'
+import Draw from 'ol/interaction/Draw'
+import Modify from 'ol/interaction/Modify'
+import { Coordinate } from 'ol/coordinate'
+import { Circle } from 'ol/geom'
+import { Style } from 'ol/style'
+import { Type } from 'ol/geom/Geometry'
 
 type DrawingFeatures = {
-  feature: ol.Feature
-  bufferFeature: ol.Feature
+  feature: Feature
+  bufferFeature: Feature
 }
 
 /**
@@ -21,7 +33,7 @@ type DrawingFeatures = {
 class PointRadiusDrawingControl extends BasicDrawingControl {
   private animationFrameId: number
   private animationFrame: () => void
-  private initalCenter: [number, number]
+  private initalCenter: Coordinate
 
   /**
    * Creates drawing control
@@ -39,13 +51,13 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     this.initalCenter = [0, 0]
   }
 
-  private startDrawAnimation(feature: ol.Feature) {
+  private startDrawAnimation(feature: Feature) {
     let revision = feature.getRevision()
     this.animationFrame = () => {
       const update = feature.getRevision()
       if (update !== revision) {
         revision = update
-        const pointFeature = new ol.Feature(
+        const pointFeature = new Feature(
           this.updatePointFromRadiusLine(this.toLine(feature))
         )
         this.applyPropertiesToFeature(pointFeature)
@@ -56,11 +68,11 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     this.animationFrame()
   }
 
-  private stopDrawAnimation(feature: ol.Feature): GeometryJSON {
+  private stopDrawAnimation(feature: Feature): GeometryJSON {
     cancelAnimationFrame(this.animationFrameId)
     this.animationFrame = () => {}
     const point = this.updatePointFromRadiusLine(this.toLine(feature))
-    const pointFeature = new ol.Feature(point)
+    const pointFeature = new Feature(point)
     const bufferUnit = this.properties.bufferUnit || METERS
     const radius = getDistanceInMeters(this.properties.buffer || 0, bufferUnit)
     let bestFitRadiusUnit = bufferUnit
@@ -78,10 +90,10 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     return geoJSON
   }
 
-  private reorientRadiusLineFeature(center: [number, number]) {
+  private reorientRadiusLineFeature(center: Coordinate) {
     this.initalCenter = center
     const line = this.makeRadiusLineFromPoint(center)
-    const feature = new ol.Feature(line)
+    const feature = new Feature(line)
     this.applyPropertiesToFeature(feature)
     this.context.updateFeature(feature)
   }
@@ -98,7 +110,9 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     this.mouseDragActive = true
     const feature = this.getFeatureFromDrawEvent(e)
     const source = this.context.getSource()
-    source.getFeatures().forEach((f) => source.removeFeature(f))
+    if (source) {
+      source.getFeatures().forEach((f) => source.removeFeature(f))
+    }
     this.initalCenter = this.toLine(feature).getCoordinates()[0]
     this.startDrawAnimation(feature)
   }
@@ -130,19 +144,19 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
   makeFeatures(geoJSON: GeometryJSON): DrawingFeatures {
     const bufferFeature = this.geoFormat.readFeature(geoJSON)
     const line = this.makeRadiusLineFromPoint(
-      this.toPoint(bufferFeature).getCoordinates()
+      this.toPoint(bufferFeature as Feature).getCoordinates()
     )
-    const feature = new ol.Feature(line)
+    const feature = new Feature(line)
     return {
       feature,
-      bufferFeature,
+      bufferFeature: bufferFeature as Feature,
     }
   }
 
   private makeRadiusLineFromPoint(
-    point: [number, number],
+    point: Coordinate,
     bearing: number = 90
-  ): ol.geom.LineString {
+  ): LineString {
     const bufferUnit = this.properties.bufferUnit || METERS
     const meters = getDistanceInMeters(this.properties.buffer || 0, bufferUnit)
     const destination = turf.rhumbDestination(point, meters, bearing, {
@@ -152,22 +166,22 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
       number,
       number
     ]
-    return new ol.geom.LineString([point, end])
+    return new LineString([point, end])
   }
 
-  private pointsEqual(a: [number, number], b: [number, number]) {
+  private pointsEqual(a: Coordinate, b: Coordinate) {
     return a[0] === b[0] && a[1] === b[1]
   }
 
-  private toLine(feature: ol.Feature): ol.geom.LineString {
-    return feature.getGeometry() as ol.geom.LineString
+  private toLine(feature: Feature): LineString {
+    return feature.getGeometry() as LineString
   }
 
-  private toPoint(feature: ol.Feature): ol.geom.Point {
-    return feature.getGeometry() as ol.geom.Point
+  private toPoint(feature: Feature): Point {
+    return feature.getGeometry() as Point
   }
 
-  private updatePointFromRadiusLine(line: ol.geom.LineString): ol.geom.Point {
+  private updatePointFromRadiusLine(line: LineString): Point {
     const center = line.getCoordinates()[0]
     if (this.pointsEqual(center, this.initalCenter)) {
       const distance = turf.rhumbDistance(
@@ -183,14 +197,14 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
         buffer,
       })
     }
-    return new ol.geom.Point(line.getCoordinates()[0])
+    return new Point(line.getCoordinates()[0])
   }
 
-  private getFeatureFromDrawEvent(e: any): ol.Feature {
+  private getFeatureFromDrawEvent(e: any): Feature {
     return e.feature
   }
 
-  private getFeatureModifyEvent(e: any): ol.Feature {
+  private getFeatureModifyEvent(e: any): Feature {
     return e.features.getArray()[0]
   }
 
@@ -206,12 +220,12 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     this.startDrawingInteraction()
   }
 
-  getStaticStyle(): ol.style.Style | ol.style.Style[] {
-    const circleFeature = new ol.Feature(new ol.geom.Circle([0, 0], 1))
+  getStaticStyle(): Style | Style[] {
+    const circleFeature = new Feature(new Circle([0, 0], 1))
     this.applyPropertiesToFeature(circleFeature)
     const style = this.context.getStyle()
     if (typeof style === 'function') {
-      return style(circleFeature, 1)
+      return style(circleFeature, 1) as Style
     } else {
       return style
     }
@@ -223,17 +237,17 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
   }
 
   private startDrawingInteraction(): void {
-    const drawInteraction = new ol.interaction.Draw({
-      type: this.getGeoType(),
+    const drawInteraction = new Draw({
+      type: this.getGeoType() as Type,
       style: this.getStaticStyle(),
       maxPoints: 2,
       source: this.context.getSource(),
-      condition: ol.events.condition.always,
-      freehandCondition: ol.events.condition.never,
+      condition: alwaysCondition,
+      freehandCondition: neverCondition,
     })
     this.drawingActive = true
     this.context.setModifyInteraction(
-      new ol.interaction.Modify({
+      new Modify({
         insertVertexCondition: () => false,
         deleteCondition: () => false,
         source: this.context.getSource(),
@@ -251,7 +265,7 @@ class PointRadiusDrawingControl extends BasicDrawingControl {
     return 'Point Radius'
   }
 
-  getGeoType(): ol.geom.GeometryType {
+  getGeoType(): Type {
     return 'LineString'
   }
 

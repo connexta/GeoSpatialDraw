@@ -1,4 +1,9 @@
-import * as ol from 'openlayers'
+import { Feature, Map } from 'ol'
+import { Vector as VectorLayer } from 'ol/layer'
+import { Vector as VectorSource } from 'ol/source'
+import { GeoJSON as GeoJSONFormat } from 'ol/format'
+import { Style } from 'ol/style'
+import { StyleFunction } from 'ol/style/Style'
 import { GeometryJSON, Extent, LengthUnit, Geometry } from '../geometry'
 import { makeBufferedGeo } from '../geometry'
 import * as _ from 'lodash'
@@ -15,9 +20,9 @@ type BufferedGeo = {
  * Renders Renderable objects on an Open Layers Map
  */
 class Renderer {
-  private map: ol.Map
-  private vectorLayer: ol.layer.Vector
-  private geoFormat: ol.format.GeoJSON
+  private map: Map
+  private vectorLayer: VectorLayer
+  private geoFormat: GeoJSONFormat
   private maxZoom: number
   private bufferCache: { [id: string]: BufferedGeo }
 
@@ -28,17 +33,17 @@ class Renderer {
    * @param maxZoom - maximum zoom to allow when panning on map
    */
   constructor(
-    map: ol.Map,
-    style: ol.style.Style | ol.StyleFunction | ol.style.Style[],
+    map: Map,
+    style: Style | StyleFunction | Style[],
     maxZoom: number
   ) {
     this.map = map
-    this.geoFormat = new ol.format.GeoJSON()
+    this.geoFormat = new GeoJSONFormat()
     this.maxZoom = maxZoom
-    const vectorSource = new ol.source.Vector({
+    const vectorSource = new VectorSource({
       features: [],
     })
-    this.vectorLayer = new ol.layer.Vector({
+    this.vectorLayer = new VectorLayer({
       source: vectorSource,
       zIndex: 1,
     })
@@ -53,8 +58,8 @@ class Renderer {
    */
   renderList(geometryList: GeometryJSON[]): void {
     const boundMakeGeometryFeature = this.makeGeometryFeature.bind(this)
-    const features = geometryList.map(boundMakeGeometryFeature) as ol.Feature[]
-    this.vectorLayer.getSource().addFeatures(features)
+    const features = geometryList.map(boundMakeGeometryFeature) as Feature[]
+    this.vectorLayer.getSource()?.addFeatures(features)
   }
 
   private getBufferedGeo(geometry: GeometryJSON): GeometryJSON {
@@ -79,14 +84,14 @@ class Renderer {
     }
   }
 
-  private makeGeometryFeature(geometry: GeometryJSON): ol.Feature {
+  private makeGeometryFeature(geometry: GeometryJSON): Feature {
     const copy = _.cloneDeep(geometry)
     adjustGeoCoordsForAntimeridian(copy)
     const buffered = this.getBufferedGeo(copy)
     // Must adjust the coordinates again because buffering undoes the
     // adjustments we made above.
     adjustGeoCoordsForAntimeridian(buffered)
-    const feature = this.geoFormat.readFeature(buffered)
+    const feature = this.geoFormat.readFeature(buffered) as Feature
     feature.setId(geometry.properties.id)
     return feature
   }
@@ -100,14 +105,14 @@ class Renderer {
     // Note: In the future we may want to optimize performance
     // here by using feature ids to update only what has
     // changed and remove only what has been removed.
-    this.vectorLayer.getSource().addFeature(feature)
+    this.vectorLayer.getSource()?.addFeature(feature)
   }
 
   /**
    * Removes all rendered geometry
    */
   clearGeos(): void {
-    this.vectorLayer.getSource().clear()
+    this.vectorLayer.getSource()?.clear()
   }
 
   /**
@@ -152,12 +157,18 @@ class Renderer {
   }
 
   getExtent(geometry: GeometryJSON): Extent {
-    let extent
+    let extent: Extent | undefined
     if (geometry.bbox) {
       extent = _.clone(geometry.bbox)
     } else {
-      const feature = this.geoFormat.readFeature(geometry)
-      extent = _.clone(feature.getGeometry().getExtent())
+      const feature = this.geoFormat.readFeature(geometry) as Feature
+      const geoExtent = feature.getGeometry()?.getExtent()
+      if (geoExtent) {
+        extent = _.clone(geoExtent) as Extent
+      }
+    }
+    if (!extent) {
+      throw new Error('Extent is undefined')
     }
     const minX = extent[0]
     const maxX = extent[2]

@@ -1,13 +1,17 @@
-import * as ol from 'openlayers'
 import * as turf from '@turf/turf'
 import DrawingContext from './drawing-context'
 import UpdatedGeoReceiver from './geo-receiver'
 import BasicDrawingControl from './basic-drawing-control'
 import { Shape } from '../shape-utils'
-import { GeometryJSON, Extent } from '../geometry'
+import { GeometryJSON, Extent as GeometryExtent } from '../geometry'
+import Style from 'ol/style/Style'
+import { Feature } from 'ol'
+import Polygon from 'ol/geom/Polygon'
+import { Extent, Interaction } from 'ol/interaction'
+import { Type } from 'ol/geom/Geometry'
 
 type ExtentEvent = {
-  extent: Extent
+  extent: GeometryExtent
 }
 
 /**
@@ -24,7 +28,7 @@ class BoundingBoxDrawingControl extends BasicDrawingControl {
     this.extentChanged = this.extentChanged.bind(this)
   }
 
-  getGeoType(): ol.geom.GeometryType {
+  getGeoType(): Type {
     return 'Polygon'
   }
 
@@ -32,9 +36,9 @@ class BoundingBoxDrawingControl extends BasicDrawingControl {
     return 'Bounding Box'
   }
 
-  getDefaultStaticStyle(): ol.style.Style | ol.style.Style[] {
-    const feature = new ol.Feature(
-      new ol.geom.Polygon([
+  getDefaultStaticStyle(): Style | Style[] {
+    const feature = new Feature(
+      new Polygon([
         [
           [0, 0],
           [0, 0],
@@ -46,7 +50,7 @@ class BoundingBoxDrawingControl extends BasicDrawingControl {
     this.applyPropertiesToFeature(feature)
     const style = this.context.getStyle()
     if (typeof style === 'function') {
-      return style(feature, 1)
+      return style(feature, 1) as Style
     } else {
       return style
     }
@@ -55,14 +59,13 @@ class BoundingBoxDrawingControl extends BasicDrawingControl {
   setGeo(geoJSON: GeometryJSON): void {
     this.cancelDrawing()
     this.setProperties((geoJSON as GeometryJSON).properties || {})
-    const feature = this.geoFormat.readFeature(geoJSON)
-    const extent = feature.getGeometry().getExtent()
+    const feature = this.geoFormat.readFeature(geoJSON) as Feature<Polygon>
+    const extent = feature.getGeometry()?.getExtent()
     this.applyPropertiesToFeature(feature)
     this.context.updateFeature(feature)
     this.context.updateBufferFeature(feature)
     const style = this.getDefaultStaticStyle()
-    // @ts-ignore ol.interaction.Extent is not in typescript for this version of Open Layers
-    const drawInteraction = new ol.interaction.Extent({
+    const drawInteraction = new Extent({
       extent,
       pointerStyle: style,
       boxStyle: style,
@@ -74,16 +77,14 @@ class BoundingBoxDrawingControl extends BasicDrawingControl {
     this.context.removeFeature()
     const style = this.getDefaultStaticStyle()
     // @ts-ignore ol.interaction.Extent is not in typescript for this version of Open Layers
-    const drawInteraction = new ol.interaction.Extent({
+    const drawInteraction = new Extent({
       pointerStyle: style,
       boxStyle: style,
     })
     this.startDrawingInteraction(drawInteraction)
   }
 
-  private startDrawingInteraction(
-    drawInteraction: ol.interaction.Interaction
-  ): void {
+  private startDrawingInteraction(drawInteraction: Interaction): void {
     this.drawingActive = true
     this.context.setDrawInteraction(drawInteraction)
     this.context.setEvent('draw', 'extentchanged', this.extentChanged)
@@ -94,14 +95,14 @@ class BoundingBoxDrawingControl extends BasicDrawingControl {
     if (e.extent !== null) {
       const geoJSON = this.extentToGeoJSON(e.extent)
       this.receiver(geoJSON)
-      const feature = this.geoFormat.readFeature(geoJSON)
+      const feature = this.geoFormat.readFeature(geoJSON) as Feature<Polygon>
       this.applyPropertiesToFeature(feature)
       this.context.updateFeature(feature)
       this.context.updateBufferFeature(feature)
     }
   }
 
-  extentToGeoJSON(bbox: Extent): GeometryJSON {
+  extentToGeoJSON(bbox: GeometryExtent): GeometryJSON {
     const bboxPolygon = turf.bboxPolygon(bbox)
     return {
       bbox,

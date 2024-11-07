@@ -1,12 +1,13 @@
-import * as ol from 'openlayers'
+import { Polygon } from 'ol/geom'
+import Feature from 'ol/Feature'
 import { expect } from 'chai'
 import PolygonDrawingControl from './polygon-drawing-control'
 import MockDrawingContext from './test/mock-drawing-context'
 
 describe('PolygonDrawingControl', () => {
   const makeFeature = () =>
-    new ol.Feature({
-      geometry: new ol.geom.Polygon([
+    new Feature({
+      geometry: new Polygon([
         [
           [50, 50],
           [10, 10],

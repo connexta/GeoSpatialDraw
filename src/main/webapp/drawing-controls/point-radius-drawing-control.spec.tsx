@@ -1,5 +1,6 @@
-import * as ol from 'openlayers'
 import * as turf from '@turf/turf'
+import { Feature } from 'ol'
+import { LineString } from 'ol/geom'
 import { expect } from 'chai'
 import PointRadiusDrawingControl from './point-radius-drawing-control'
 import MockDrawingContext from './test/mock-drawing-context'
@@ -12,9 +13,8 @@ describe('PointRadiusDrawingControl', () => {
     }).geometry.coordinates,
   ]
   const makeFeature = () =>
-    new ol.Feature({
-      // @ts-ignore
-      geometry: new ol.geom.LineString(makeCoordinates()),
+    new Feature({
+      geometry: new LineString(makeCoordinates()),
       color: '#996600',
       shape: 'Point Radius',
       buffer: 70,

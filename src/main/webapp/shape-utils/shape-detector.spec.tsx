@@ -1,6 +1,7 @@
-import * as ol from 'openlayers'
 import { expect } from 'chai'
 import ShapeDetector from './shape-detector'
+import { Feature } from 'ol'
+import { Polygon, LineString, Point } from 'ol/geom'
 
 describe('ShapeDetector', () => {
   let shapeDetector: ShapeDetector = new ShapeDetector()
@@ -9,8 +10,8 @@ describe('ShapeDetector', () => {
   })
   describe('isBoundingBoxFeature', () => {
     it('Clockwise From Bottom Left', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [0, 0],
             [0, 1],
@@ -24,8 +25,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal(true)
     })
     it('Clockwise From Top Left', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [0, 1],
             [1, 1],
@@ -39,8 +40,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal(true)
     })
     it('Clockwise From Top Right', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [1, 1],
             [1, 0],
@@ -54,8 +55,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal(true)
     })
     it('Clockwise Bottom Right', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [1, 0],
             [0, 0],
@@ -69,8 +70,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal(true)
     })
     it('Old Editor Bounding Box', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [37.15079928954003, 35.252426841484066],
             [38.8031053182774, 35.252426841484066],
@@ -84,8 +85,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal(true)
     })
     it('Random Bounding Box', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [-103.23955535888672, 41.966400146484375],
             [-102.4200439453125, 41.966400146484375],
@@ -99,8 +100,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal(true)
     })
     it('Not a bounding box first and last coordinates', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [1, 0.1],
             [0, 0],
@@ -114,8 +115,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal(false)
     })
     it('Not a bounding box middle coordinate', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [1, 0],
             [0, 1],
@@ -131,8 +132,8 @@ describe('ShapeDetector', () => {
   })
   describe('shapeFromFeature', () => {
     it('Line', () => {
-      const feature = new ol.Feature(
-        new ol.geom.LineString([
+      const feature = new Feature(
+        new LineString([
           [5, 5],
           [0, 0],
         ])
@@ -141,8 +142,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal('Line')
     })
     it('Line closed loop', () => {
-      const feature = new ol.Feature(
-        new ol.geom.LineString([
+      const feature = new Feature(
+        new LineString([
           [5, 5],
           [0, 0],
           [5, 5],
@@ -152,8 +153,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal('Line')
     })
     it('Bounding Box', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [0.212, 0.389],
             [0.212, 0.503],
@@ -167,15 +168,15 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal('Bounding Box')
     })
     it('Point Radius', () => {
-      const feature = new ol.Feature(new ol.geom.Point([0, 0]))
+      const feature = new Feature(new Point([0, 0]))
       feature.set('buffer', 1)
       feature.set('bufferUnit', 'meters')
       const actual = shapeDetector.shapeFromFeature(feature)
       expect(actual).to.equal('Point Radius')
     })
     it('Polygon near circular', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [0.0, -2.3125],
             [-2.0027, -1.1563],
@@ -191,8 +192,8 @@ describe('ShapeDetector', () => {
       expect(actual).to.equal('Polygon')
     })
     it('Polygon triangle', () => {
-      const feature = new ol.Feature(
-        new ol.geom.Polygon([
+      const feature = new Feature(
+        new Polygon([
           [
             [0.0, 0.0],
             [3.0, 3.0],

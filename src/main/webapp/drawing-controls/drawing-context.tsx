@@ -1,6 +1,14 @@
-import * as ol from 'openlayers'
 import { GeometryJSON, makeBufferedGeo } from '../geometry'
 import { adjustGeoCoordsForAntimeridian } from '../geometry/utilities'
+import Map from 'ol/Map'
+import { Vector as VectorLayer } from 'ol/layer'
+import { Interaction, Modify, Snap } from 'ol/interaction'
+import Feature from 'ol/Feature'
+import GeoJSON from 'ol/format/GeoJSON'
+import { Style } from 'ol/style'
+import { StyleFunction } from 'ol/style/Style'
+import VectorSource from 'ol/source/Vector'
+import { EventTypes } from 'ol/Observable'
 
 type EventHandler = (e: any) => void
 
@@ -18,15 +26,15 @@ type ListenerRecord = {
  * accross all drawing controls.
  */
 class DrawingContext {
-  private map: ol.Map
-  private drawLayer: ol.layer.Vector
-  private bufferLayer: ol.layer.Vector
-  private modify: ol.interaction.Modify
-  private snap: ol.interaction.Snap
-  private draw: ol.interaction.Interaction | null
+  private map: Map
+  private drawLayer: VectorLayer
+  private bufferLayer: VectorLayer
+  private modify: Modify
+  private snap: Snap
+  private draw: Interaction | null
   private listenerList: ListenerRecord[]
-  private style: ol.style.Style | ol.StyleFunction | ol.style.Style[]
-  private geoFormat: ol.format.GeoJSON
+  private style: Style | StyleFunction | Style[]
+  private geoFormat: GeoJSON
   private animationFrameId: number
   private updatedBuffer: number | undefined
   private updatedBufferUnit: string | undefined
@@ -40,65 +48,67 @@ class DrawingContext {
     map,
     drawingStyle,
   }: {
-    map: ol.Map
-    drawingStyle: ol.style.Style | ol.StyleFunction | ol.style.Style[]
+    map: Map
+    drawingStyle: Style | StyleFunction | Style[]
   }) {
     this.bufferUpdateEvent = this.bufferUpdateEvent.bind(this)
     this.animationFrameId = 0
-    this.geoFormat = new ol.format.GeoJSON()
+    this.geoFormat = new GeoJSON()
     this.style = drawingStyle
     this.draw = null
     this.listenerList = []
     this.map = map
-    this.drawLayer = new ol.layer.Vector({
-      source: new ol.source.Vector(),
-      style: drawingStyle,
+    this.drawLayer = new VectorLayer({
+      source: new VectorSource(),
+      properties: { style: drawingStyle, updateWhileInteracting: true },
       zIndex: 2,
-      updateWhileInteracting: true,
     })
-    this.bufferLayer = new ol.layer.Vector({
-      source: new ol.source.Vector(),
-      style: drawingStyle,
+    this.bufferLayer = new VectorLayer({
+      source: new VectorSource(),
+      properties: { style: drawingStyle },
       zIndex: 1,
     })
     this.map.addLayer(this.bufferLayer)
     this.map.addLayer(this.drawLayer)
-    this.modify = new ol.interaction.Modify({
-      source: this.drawLayer.getSource(),
-    })
-    this.snap = new ol.interaction.Snap({
-      source: this.drawLayer.getSource(),
-    })
+    const source = this.drawLayer.getSource()
+    if (source) {
+      this.modify = new Modify({
+        source,
+      })
+      this.snap = new Snap({
+        source,
+      })
+    }
   }
 
   updateBuffer(buffer: number, bufferUnit: string): void {
     this.updatedBuffer = buffer
     this.updatedBufferUnit = bufferUnit
-    const featureList = this.drawLayer.getSource().getFeatures()
-    if (featureList.length) {
+    const featureList = this.drawLayer.getSource()?.getFeatures()
+    if (featureList?.length) {
       const feature = featureList[0]
       this.updateBufferFeature(feature)
     }
   }
 
-  getStyle(): ol.style.Style | ol.StyleFunction | ol.style.Style[] {
+  getStyle(): Style | StyleFunction | Style[] {
     return this.style
   }
 
   removeFeature(): void {
-    this.drawLayer.getSource().clear()
+    this.drawLayer.getSource()?.clear()
   }
 
-  updateFeature(feature: ol.Feature): void {
+  updateFeature(feature: Feature): void {
     this.removeFeature()
     const geo: GeometryJSON = JSON.parse(this.geoFormat.writeFeature(feature))
     adjustGeoCoordsForAntimeridian(geo)
     const adjustedFeature = this.geoFormat.readFeature(geo)
-    this.drawLayer.getSource().addFeature(adjustedFeature)
+    this.drawLayer.getSource()?.addFeature(adjustedFeature)
   }
 
-  updateBufferFeature(feature: ol.Feature, animate: boolean = true): void {
-    this.bufferLayer.getSource().clear()
+  updateBufferFeature(feature: Feature, animate: boolean = true): void {
+    this.bufferLayer.getSource()?.clear()
     const buffer: number | undefined = this.updatedBuffer
       ? this.updatedBuffer
       : feature.get('buffer')
@@ -115,7 +125,7 @@ class DrawingContext {
       // adjustments we made above.
       adjustGeoCoordsForAntimeridian(bufferedGeo)
       const bufferFeature = this.geoFormat.readFeature(bufferedGeo)
-      this.bufferLayer.getSource().addFeature(bufferFeature)
+      this.bufferLayer.getSource()?.addFeature(bufferFeature)
       if (animate) {
         this.setEvent('map', 'pointerdrag', this.bufferUpdateEvent)
       }
@@ -123,8 +133,8 @@ class DrawingContext {
   }
 
   protected bufferUpdateEvent() {
-    const featureList = this.drawLayer.getSource().getFeatures()
-    if (featureList.length) {
+    const featureList = this.drawLayer.getSource()?.getFeatures()
+    if (featureList?.length) {
       const feature = featureList[0]
       this.animationFrameId = requestAnimationFrame(() => {
         this.updateBufferFeature(feature)
@@ -132,22 +142,22 @@ class DrawingContext {
     }
   }
 
-  setModifyInteraction(modify: ol.interaction.Modify): void {
+  setModifyInteraction(modify: Modify): void {
     this.modify = modify
   }
 
-  getSource(): ol.source.Vector {
-    return this.drawLayer.getSource()
+  getSource(): VectorSource | undefined {
+    return this.drawLayer.getSource() || undefined
   }
 
-  setDrawInteraction(draw: ol.interaction.Interaction): void {
+  setDrawInteraction(draw: Interaction): void {
     this.draw = draw
   }
 
   setEvent(target: ListenerTarget, event: string, handler: EventHandler): void {
     const listenerTarget = this[target]
     if (listenerTarget !== null) {
-      listenerTarget.on(event, handler)
+      listenerTarget.on(event as EventTypes, handler)
       this.listenerList.push({
         target,
         event,
@@ -162,11 +172,11 @@ class DrawingContext {
     handler: EventHandler
   ): void {
     if (target === 'map') {
-      this.map.un(event, handler)
+      this.map.un(event as EventTypes, handler)
     } else {
       const listenerTarget = this[target]
       if (listenerTarget !== null) {
-        listenerTarget.un(event, handler)
+        listenerTarget.un(event as EventTypes, handler)
       }
     }
   }
@@ -200,17 +210,20 @@ class DrawingContext {
     if (this.draw !== null) {
       this.map.removeInteraction(this.draw)
     }
-    this.drawLayer.getSource().clear()
-    this.bufferLayer.getSource().clear()
+    this.drawLayer.getSource()?.clear()
+    this.bufferLayer.getSource()?.clear()
   }
 
   remakeInteractions(): void {
-    this.modify = new ol.interaction.Modify({
-      source: this.drawLayer.getSource(),
-    })
-    this.snap = new ol.interaction.Snap({
-      source: this.drawLayer.getSource(),
-    })
+    const source = this.drawLayer.getSource()
+    if (source) {
+      this.modify = new Modify({
+        source,
+      })
+      this.snap = new Snap({
+        source,
+      })
+    }
   }
 
   setInteractionsActive(active: boolean): void {
@@ -230,7 +243,14 @@ class DrawingContext {
   }
 
   circleRadiusToMeters(radius: number): number {
-    return radius * this.map.getView().getProjection().getMetersPerUnit()
+    const projection = this.map.getView().getProjection()
+    if (projection) {
+      const metersPerUnit = projection.getMetersPerUnit()
+      if (metersPerUnit) {
+        return radius * metersPerUnit
+      }
+    }
+    return 0
   }
 }
 

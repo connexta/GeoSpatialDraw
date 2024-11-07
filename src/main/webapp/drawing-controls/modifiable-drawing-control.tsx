@@ -1,8 +1,11 @@
-import * as ol from 'openlayers'
+import { Feature } from 'ol'
+import { Style } from 'ol/style'
+import Draw from 'ol/interaction/Draw'
 import DrawingContext from './drawing-context'
 import UpdatedGeoReceiver from './geo-receiver'
 import BasicDrawingControl from './basic-drawing-control'
 import { GeometryJSON } from '../geometry'
+import { Interaction } from 'ol/interaction'
 
 abstract class ModifiableDrawingControl extends BasicDrawingControl {
   protected constructor(context: DrawingContext, receiver: UpdatedGeoReceiver) {
@@ -44,30 +47,30 @@ abstract class ModifiableDrawingControl extends BasicDrawingControl {
     this.receiver(this.getGeoJSONFromCompleteModifyEvent(e))
   }
 
-  makeFeature(geoJSON: GeometryJSON): ol.Feature {
-    const feature = this.geoFormat.readFeature(geoJSON)
-    if (feature.getGeometry().getType() !== this.getGeoType()) {
+  makeFeature(geoJSON: GeometryJSON): Feature {
+    const feature = this.geoFormat.readFeature(geoJSON) as Feature
+    if (feature.getGeometry()?.getType() !== this.getGeoType()) {
       throw new Error(
         `Wrong geometry type! expected ${this.getGeoType()} but got ${feature
           .getGeometry()
-          .getType()} instead.`
+          ?.getType()} instead.`
       )
     }
     return feature
   }
 
-  getStaticStyle(feature: ol.Feature): ol.style.Style | ol.style.Style[] {
+  getStaticStyle(feature: Feature): Style | Style[] {
     const style = this.context.getStyle()
     if (typeof style === 'function') {
-      return style(feature, 1)
+      return style(feature, 1) as Style | Style[]
     } else {
       return style
     }
   }
 
-  protected abstract makeEmptyFeature(): ol.Feature
+  protected abstract makeEmptyFeature(): Feature
 
-  getDefaultStaticStyle(): ol.style.Style | ol.style.Style[] {
+  getDefaultStaticStyle(): Style | Style[] {
     const feature = this.makeEmptyFeature()
     this.applyPropertiesToFeature(feature)
     return this.getStaticStyle(feature)
@@ -80,7 +83,7 @@ abstract class ModifiableDrawingControl extends BasicDrawingControl {
     this.applyPropertiesToFeature(feature)
     this.context.updateFeature(feature)
     this.context.updateBufferFeature(feature)
-    const drawInteraction = new ol.interaction.Draw({
+    const drawInteraction = new Draw({
       type: this.getGeoType(),
       style: this.getStaticStyle(feature),
     })
@@ -89,7 +92,7 @@ abstract class ModifiableDrawingControl extends BasicDrawingControl {
 
   startDrawing(): void {
     this.context.removeFeature()
-    const drawInteraction = new ol.interaction.Draw({
+    const drawInteraction = new Draw({
       type: this.getGeoType(),
       style: this.getDefaultStaticStyle(),
     })
@@ -100,9 +103,7 @@ abstract class ModifiableDrawingControl extends BasicDrawingControl {
     this.context.updateBuffer(buffer, bufferUnit)
   }
 
-  private startDrawingInteraction(
-    drawInteraction: ol.interaction.Interaction
-  ): void {
+  private startDrawingInteraction(drawInteraction: Interaction): void {
     this.drawingActive = true
     this.context.setDrawInteraction(drawInteraction)
     this.context.setEvent('draw', 'drawend', this.onCompleteDrawing)
