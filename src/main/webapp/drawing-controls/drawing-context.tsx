@@ -60,14 +60,19 @@ class DrawingContext {
     this.map = map
     this.drawLayer = new VectorLayer({
       source: new VectorSource(),
-      properties: { style: drawingStyle, updateWhileInteracting: true },
+      updateWhileInteracting: true,
+      updateWhileAnimating: true,
+      style: drawingStyle,
       zIndex: 2,
-    })
+    });
     this.bufferLayer = new VectorLayer({
       source: new VectorSource(),
-      properties: { style: drawingStyle },
+      updateWhileInteracting: true,
+      updateWhileAnimating: true,
+
+      style: drawingStyle,
       zIndex: 1,
-    })
+    });
     this.map.addLayer(this.bufferLayer)
     this.map.addLayer(this.drawLayer)
     const source = this.drawLayer.getSource()
