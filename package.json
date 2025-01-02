@@ -1,6 +1,6 @@
 {
   "name": "geospatialdraw",
-  "version": "0.4.16",
+  "version": "0.4.17",
   "description": "Geospatial Map Drawing Library",
   "types": "./target/webapp/index.d.ts",
   "main": "./target/webapp/index.js",
@@ -40,9 +40,7 @@
     "build": "tsc -p tsconfig.json",
     "build:verify": "yarn run fmt && yarn run test && yarn run build",
     "build:all": "yarn run build:verify",
-    "prepublish": "yarn build:all",
-    "m2": "yarn install:m2",
-    "install:m2": "ace clean && ace bundle && ace package && ace install"
+    "prepublish": "yarn build:all"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "6.6.0",
@@ -60,7 +58,7 @@
     "usng.js": "0.4.2"
   },
   "devDependencies": {
-    "@connexta/ace": "file://opt/repos/ace/",
+    "@connexta/ace": "git+https://github.com/connexta/ace.git#45cc73f03a3f52662e48e6070139992045753974",
     "@emotion/core": "11.0.0",
     "@emotion/styled": "11.13.0",
     "@types/chai": "5.0.1",
@@ -94,5 +92,6 @@
     ],
     "testPath": "src/",
     "testSetupPath": "src/main/webapp/internal/tests/index.tsx"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
