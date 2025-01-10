@@ -193,7 +193,7 @@ const adjustGeoCoordsForAntimeridian = (geo: GeometryJSON) => {
       const lineStringCoords = (geometry as GeoJSON.LineString).coordinates
       geometry.coordinates = convertCoordsToDisplay(lineStringCoords)
     } else if (geometry.type === 'Polygon') {
-      const coords = (geometry as GeoJSON.Polygon).coordinates[0] || [[]];
+      const coords = (geometry as GeoJSON.Polygon).coordinates[0] || [[]]
       geometry.coordinates[0] = convertCoordsToDisplay(coords)
     }
   }

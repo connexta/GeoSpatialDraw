@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { makeEmptyGeometry } from '../geometry'
+import { makeEmptyGeometry } from '../geometry/utilities'
 import { updateCircleGeo } from './circle-geo-writer'
 
 describe('updateCircleGeo', () => {

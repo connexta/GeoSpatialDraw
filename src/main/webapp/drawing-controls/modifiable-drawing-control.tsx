@@ -83,23 +83,23 @@ abstract class ModifiableDrawingControl extends BasicDrawingControl {
     this.applyPropertiesToFeature(feature)
     this.context.updateFeature(feature)
     this.context.updateBufferFeature(feature)
-    const style = this.getStaticStyle(feature);
+    const style = this.getStaticStyle(feature)
     const drawInteraction = new Draw({
       type: this.getGeoType(),
       source: this.context.getSource(),
       style: style,
-    });
+    })
     this.startDrawingInteraction(drawInteraction)
   }
 
   startDrawing(): void {
     this.context.removeFeature()
-    const style = this.getDefaultStaticStyle();
+    const style = this.getDefaultStaticStyle()
     const drawInteraction = new Draw({
       type: this.getGeoType(),
       source: this.context.getSource(),
       style: style,
-    });
+    })
     this.startDrawingInteraction(drawInteraction)
   }
 

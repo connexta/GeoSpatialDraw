@@ -64,7 +64,7 @@ class DrawingContext {
       updateWhileAnimating: true,
       style: drawingStyle,
       zIndex: 2,
-    });
+    })
     this.bufferLayer = new VectorLayer({
       source: new VectorSource(),
       updateWhileInteracting: true,
@@ -72,7 +72,7 @@ class DrawingContext {
 
       style: drawingStyle,
       zIndex: 1,
-    });
+    })
     this.map.addLayer(this.bufferLayer)
     this.map.addLayer(this.drawLayer)
     const source = this.drawLayer.getSource()
